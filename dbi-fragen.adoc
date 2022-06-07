@@ -1,0 +1,352 @@
+= DBI Matura Fragen
+
+== Concurrency Fragen:
+
+=== warum heißt es atomicity
+
+*Antwort:* atom ist unteilbar
+
+=== was heißt konsistent
+
+*Antwort:* es hat nie einen zustand welcher ungleich ist, von einem konsistenten zustand in einen anderen konsistenten zustand +
+
+=== welches gegenstück zu acid gibt es
+
+*Antwort:* NoSQL-DB's verwenden cap-theorem
+
+=== wie definiert man beginn und ende einer transaktion
+
+*Antwort:* in oracle gibt es keinen beginn, commit => ende und rollback => abort +
+
+=== timeout in oracle db, probiert es oracle wieder
+
+*Antwort:* nein
+
+=== was ist db2
+
+*Antwort:* ist eine uralte datenbank von ibm, irrelevant
+
+=== was muss man im sql developer ausschalten für dirty read und write
+
+*Antwort:* autocommit
+
+=== Nächsten 2 fragen kommen nicht
+
+* was sind r-sperren
+** read sperren
+* was sind r und x-sperren
+** read und x = ausschließlich
+
+== JPA Referat Fragen:
+
+=== Wie kann man sql in jpa schreiben
+
+*Antwort:* jpql
+
+=== was sind annotationen
+
+*Antwort:* einfach @ManyToMany z.B. über property
+
+=== jpa
+
+*Antwort:* spezifikation
+
+=== hibernate
+
+*Antwort:* implementierung vom standard
+
+=== wer ist topLink
+
+*Antwort:*  oracle implementierung
+
+=== wie macht oracle db primary keys
+
+*Antwort:* sequence
+
+=== andere möglichkeiten für primary key
+
+*Antwort:* strategy.table macht eigene tabelle und zählt eben immer eins hoch
+
+=== befehl für in db speichern
+
+*Antwort:* merge oder persist (es gibt schönes bild  dafür)
+
+=== klasse ohne @table
+
+*Antwort:* heißt so wie klasse
+
+=== für was verwendet man @columnName
+
+*Antwort:* variable name darf nicht gleich sein wie datentyp (number, date, ...)
+
+=== dtype bei single table
+
+*Antwort:* gibt an von welcher klasse die zeile ist
+
+== PLSQL Referat Fragen:
+
+=== Kann die prozedur was returnen
+
+ja, out parameter
+
+=== wie ruft man die auf
+
+in begin end block, execute func, select <procedure> from dual
+
+=== MDRT$ in Tabellen
+
+weiß keiner
+
+=== Tabellen gelöscht
+
+von recycle bin wieder holen
+
+=== was gibts noch außer %type
+
+%rowtype
+
+=== ||
+
+pipe, strings concat bzw. konkatinieren
+
+=== scott.my_funcs_pkg.my_func
+
+user.package.function oder procedure from dual
+
+=== wie schauts aus bei count, in trigger update und insert was passiert => trigger mutation, ganz schlecht
+
+=== trigger
+
+raise application error bricht trigger ab
+
+=== insert in trigger
+
+nein weil dann mutiert der trigger my nibba
+
+=== trigger for each row
+
+nur dann hat man :new und :old
+
+=== wie haben oracle dbms scheduler realisiert
+
+dbms_scheduler ist package  create_job ist procedure
+
+=== aufrufgesteuerte sachen
+
+procedures, functions
+
+=== wozu braucht man cursor
+
+damit man mehrere zeilen bei einem select ohne fehler zurück bekommen kann
+
+=== Select in variable
+
+select * into variable
+
+=== cursor
+
+loop fetch usw. oder cursor for
+
+== Referat: Concurrency
+
+*Consistency:*
+
+Es hat nie einen Zustand, der nicht ungleich ist.
+
+Keine zwei Tumfarts in einer Tabelle.
+
+=== Welches gegenstück gibt es zu ACID bei anderen Datenbanken?
+
+NoSQL gibt es kein ACID.
+
+*Antwort:* CAP-Theorem
+
+=== Wie schreibt man ein beginn und ende bei einer Transaction?
+
+*Begin:* Gibts keinen | Ist der letzte Commit +
+*Ende:* Commit
+
+=== Wie aborted man?
+
+*Keine Antwort bekommen*
+
+=== Was sind R Sperren (Wird wrsl nicht gefragt)
+
+*R* Sperren sind `Read Sperren` +
+*RX* sind Read und `Write Sperren`
+
+=== Welche Sperren kann man in Oracle stellen? (?)
+
+* Lock Escalation
+
+=== Wie kann man Probleme lösen
+
+*Antwort:* Isolation-ebenen
+
+=== Was kann aber doch noch Passieren
+
+*Antwort:* Deadlock
+
+=== Kann bei der Oracle DB einen Deadlock erstellen
+
+*Antwort:* Ja
+
+=== Wie löst Oracle einen Deadlock
+
+*Antwort:* Wir selber müssen nichts machen, wird mit timeouts gelöst.
+
+== Referat: NoSQL
+
+=== Welche Hauptkategorien gibt es
+
+* Key Value
+* Document
+* Wide-Column
+* Graph
+
+=== Nenne jeweils ein Bsp.
+
+``siehe Referat``
+
+=== Warum wird ACID bei NoSQL verwendet
+
+*Antwort:* Es gehört nicht dazu. ACID hat nichts mit NoSql zutun.
+
+=== Welche Constrains gibt es
+
+* Unique
+* FK
+* PK +
+...
+
+=== Welche 2 BErreiche erfühlt die MongoDB
+
+* Consistency
+* Partition-Tolerance +
+``Siege Referat, CAP-Theorem, Bild``
+
+=== Was war der Vorgänger von JSON
+
+*Antwort:* XML
+
+=== Grundfrage: Was is besser, Relationale DB oder NoSql
+
+*Antwort:* Kann man nicht sagen. Relationale Datenbanken sind "Ordentlicher" als NoSql Datenbanken.
+Es kommt auf den UseCase an.
+
+=== Gibt es in Mongo FK
+
+*Antwort*: Grundsätzlich nein, weil es ja keine Relationale Datenbank ist.
+
+== Referat: DDL & DCL (Constraint sind wichtig)
+
+=== Es gibt DDL und DCL. Welche gibt es noch?
+
+*Antwort:* DQL(SQL) und DML gibt es auch noch
+
+=== Gibt es noch eine möglichkeit zu löschen?
+
+*Antwort:* Truncate
+
+=== Welche Constrains gibt es noch
+
+*Antwort:*
+
+* PK
+* FK
+* Not Null
+* Unique
+* Check
+* Default
+* Create Index
+
+=== WO kann man constraints hinschreiben
+
+*Antwort:* Nach dem Attribut (Column Constrains) und Table Constrains bei zusammengesetzte
+
+=== Was ist ein zusammengesetzte PK
+
+*Antwort:* 2 Attribute bilden einen zusammengesetzte PK und werden eindeutig.
+
+=== Kann man Datentypen ändern, wenn schon daten drin sind z.B. varchar zu number?
+
+*Antwort:* Nein nicht direkt, weil Daten schon drin sind geht es nicht. Man könnte aber die Spalte Kopieren in eine andere und die alte dann löschen.
+
+=== Was macht Truncate
+
+*Antwort:* Löscht die Daten, nicht die Tabelle.
+
+=== Womit kann man Truncate vergleichen und was is der Unterschied?
+
+*Antwort:* Delete From, bei Delete From gibt es ein Where. Truncate hat das nicht.
+
+=== Gibt es einen Mistkübel in Oracle beim Löschen (Tabelle zurückhollen)
+
+*Antwort:* Ja, Recycle Bin
+
+=== Was ist eine View
+
+*Antwort:* Virtuelle Tabelle dient zur Veranschaulichung
+
+=== Wie kann man verhindern eine Tabelle zu sehen
+
+*Antwort:* Mit rechten
+
+=== Welcher Index bei einer Tabelle ist Standart
+
+*Antwort:* ID
+
+=== Wofür wird Index verwendet
+
+*Antwort:* Es ist viel schneller.
+
+=== Was macht Revoke?
+
+*Antwort:* Gegenteil von Grant
+
+=== Wie kann man die Rechte weitergeben?
+
+*Antwort:* ... with option
+
+=== Was macht checkt Constraints
+
+*Antwort:* Mann kann sagen das z.B. der User nicht älter als 18 sein darf. Also überprüfung in der DB.
+
+== Referat: Database Administration & Security
+
+=== Wie legt man einen User in Oracle
+
+*Antwort:* ``CREATE USER IDENTIFIED BY PASSWORD``
+
+=== Wie gibt man Rechte auf einen User
+
+*Antwort:* GRANT
+
+=== Wer is der bekannteste User in Oracle
+
+*Antwort:* u: Scoot, pw: Tiger
+
+=== Wie bekomme ich einen Wertebereich
+
+*Antwort:* Check?
+
+=== Welche Constraints gibt es
+
+* UNIQUE
+* Not NULL
+* PK
+* FK
+* Check
+* ...
+
+=== Memory Datenbank?
+
+*Antwort:* HANA
+
+=== Oracle Datenbank In Memory Datenbank?
+
+*Antwort:* Nein
+
+
+
+
