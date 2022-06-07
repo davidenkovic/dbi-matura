@@ -1,0 +1,12 @@
+= DBI Matura
+
+== Themen
+
+1. Grundlagen der Datenbanktechnologien
+2. Konzeptionelles Modell
+3. SQL Data Retrieval und DML
+4. SQL DCL und DDL
+5. Datenbankadministration und internes Modell
+6. Semistrukturierte Daten und prozedurale Erweiterung
+7. Spezielle DB Themen
+8. Die "Multiuser-Eigenschaft" von Datenbanken und Concurrency
