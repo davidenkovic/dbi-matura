@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
 <link rel="icon" type="image/png" href="themes/favicon.png">
-<title>Grundlagen der Datenbanktechnologien (Datenmodellierung, NoSQL)</title>
+<title>SQL Data Retrieval und DML</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -440,869 +440,231 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Grundlagen der Datenbanktechnologien (Datenmodellierung, NoSQL)</h1>
+<h1>SQL Data Retrieval und DML</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_datenmodellierung">1. Datenmodellierung</a>
+<li><a href="#_manipulation">1. Manipulation</a>
 <ul class="sectlevel2">
-<li><a href="#_wertebereiche_attribute_formatierung">1.1. Wertebereiche, Attribute, Formatierung</a></li>
-<li><a href="#_namensgebung">1.2. Namensgebung</a></li>
-<li><a href="#_relationales_modell">1.3. Relationales Modell</a></li>
-<li><a href="#_übergang_zwischen_erd_und_rm">1.4. Übergang zwischen ERD und RM</a></li>
-<li><a href="#_tabelle">1.5. Tabelle</a></li>
-<li><a href="#_primärschlüssel">1.6. Primärschlüssel</a></li>
-<li><a href="#_eigenschaften_eines_pks">1.7. Eigenschaften eines PK´s:</a></li>
-<li><a href="#_fremdschlüssel">1.8. Fremdschlüssel</a></li>
-<li><a href="#_notationen">1.9. Notationen</a></li>
-<li><a href="#_anomalien">1.10. Anomalien</a></li>
-<li><a href="#_kardinalitäten">1.11. Kardinalitäten</a></li>
-<li><a href="#_constrains">1.12. Constrains</a></li>
-<li><a href="#_normalformen">1.13. Normalformen</a></li>
-<li><a href="#_bcnf">1.14. BCNF</a></li>
+<li><a href="#_insert">1.1. INSERT</a></li>
+<li><a href="#_update">1.2. UPDATE</a></li>
+<li><a href="#_delete">1.3. DELETE</a></li>
 </ul>
 </li>
-<li><a href="#_nosql">2. NOSQL</a>
+<li><a href="#_select">2. SELECT</a>
 <ul class="sectlevel2">
-<li><a href="#_allgemein">2.1. Allgemein</a></li>
-<li><a href="#_hauptkategorien">2.2. Hauptkategorien</a></li>
+<li><a href="#_statische_funktionen">2.1. Statische Funktionen</a></li>
 </ul>
 </li>
-<li><a href="#_acid">3. ACID</a></li>
-<li><a href="#_cap_theorem">4. CAP-Theorem</a></li>
-<li><a href="#_mongodb">5. MongoDB</a></li>
-<li><a href="#_aufbau">6. Aufbau</a></li>
-<li><a href="#_json">7. JSON</a></li>
-<li><a href="#_bson">8. BSON</a></li>
-<li><a href="#_mongodb_use_cases">9. MongoDB use cases</a></li>
-<li><a href="#_grund_befehle">10. Grund Befehle</a></li>
-<li><a href="#_fragen">11. Fragen</a></li>
+<li><a href="#_view">3. View</a></li>
+<li><a href="#_join">4. JOIN</a>
+<ul class="sectlevel2">
+<li><a href="#_natural_join">4.1. Natural JOIN</a></li>
+<li><a href="#_cross_join">4.2. Cross JOIN</a></li>
+<li><a href="#_using">4.3. USING</a></li>
+<li><a href="#_on">4.4. ON</a></li>
+</ul>
+</li>
+<li><a href="#_subselect">5. Subselect</a></li>
+<li><a href="#_group_by">6. Group By</a></li>
+<li><a href="#_objektprivilegien">7. Objektprivilegien</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_datenmodellierung"><a class="anchor" href="#_datenmodellierung"></a>1. Datenmodellierung</h2>
+<h2 id="_manipulation"><a class="anchor" href="#_manipulation"></a>1. Manipulation</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p><strong>Entität:</strong> Eine Entität ist ein individuelles und identifizierbares Exemplar von Dingen, Personen oder Begriffen der realen oder der Vorstellungswelt.</p>
-</div>
-<div class="paragraph">
-<p><strong>Assoziation</strong>:<br></p>
-</div>
-<div class="paragraph">
-<p>Eine Assoziation legt fest wie zwei Entitäten zusammenhängen:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>1: genau eins</p>
-</li>
-<li>
-<p>c: keins oder eins</p>
-</li>
-<li>
-<p>m: mindestens eins</p>
-</li>
-<li>
-<p>mc: keins, eins, oder mehrere Gegenassoziation</p>
-</li>
-</ul>
-</div>
-<div class="imageblock">
+<div class="sect2">
+<h3 id="_insert"><a class="anchor" href="#_insert"></a>1.1. INSERT</h3>
+<div class="listingblock">
+<div class="title">version 1</div>
 <div class="content">
-<img src="../images/image-2022-06-08-19-11-11-507.png" alt="image 2022 06 08 19 11 11 507">
-</div>
-<div class="title">Figure 1. Gegenassoziation</div>
-</div>
-<div class="sect2">
-<h3 id="_wertebereiche_attribute_formatierung"><a class="anchor" href="#_wertebereiche_attribute_formatierung"></a>1.1. Wertebereiche, Attribute, Formatierung</h3>
-<div class="paragraph">
-<p>Ein Wertebereich (Domain) ist eine Menge von verschiedenen Datenwerten desselben Datentyps.<br></p>
-</div>
-<div class="paragraph">
-<p>Ein Attribut beschreibt eine bestimmte Eigenschaft der Entität einer Entitätsmenge. Diese Eigenschaftswert können nur bestimmte Werte annehmen, die in einem Wertebereich definiert sind.</p>
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">dept</span> <span class="p">(</span><span class="n">deptno</span><span class="p">,</span> <span class="n">dname</span><span class="p">)</span>
+ <span class="k">VALUES</span> <span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="s1">'MIS'</span><span class="p">);</span></code></pre>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_namensgebung"><a class="anchor" href="#_namensgebung"></a>1.2. Namensgebung</h3>
-<div class="paragraph">
-<p><strong>Entität:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>stets im Singular</p>
-</li>
-<li>
-<p>wenn möglich keine Abkürzungen</p>
-</li>
-<li>
-<p>Einheitlich bleiben (und auch konsistent)</p>
-</li>
-<li>
-<p>Begriffe der Geschäftswelt verwenden</p>
-</li>
-<li>
-<p>keine EDV-Fachausdrücke (Zielgruppe ist ja die Fachabteilung)</p>
-</li>
-<li>
-<p>Keine Synonyme (verschiedene Wörter für gleiche Begriffe) zB.: BANK, Geldinstitut</p>
-</li>
-<li>
-<p>Keine Homonyme (1 Wort mit mehreren Bedeutungen) zB.: BANK (Sitzbank, Geldinstitut)</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Assoziation:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Verben</p>
-</li>
-<li>
-<p>In beiden Richtungen Namen vergeben</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_relationales_modell"><a class="anchor" href="#_relationales_modell"></a>1.3. Relationales Modell</h3>
-<div class="paragraph">
-<p>anstatt Daten abstrakt (ERD) darzustellen wird im RM eine datennähere Illustration verwendet.</p>
-</div>
-<div class="imageblock">
+<div class="listingblock">
+<div class="title">version 2</div>
 <div class="content">
-<img src="../images/image-2022-06-08-22-30-35-734.png" alt="image 2022 06 08 22 30 35 734">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">dept</span>
+ <span class="k">VALUES</span> <span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="s1">'MIS'</span><span class="p">,</span> <span class="k">NULL</span><span class="p">);</span></code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p><strong>Tupel:</strong> Eine Tabelle ist eine Menge von Tupeln; ein Tupel ist eine Liste von Werten und entspricht einer Tabellenzeile.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_übergang_zwischen_erd_und_rm"><a class="anchor" href="#_übergang_zwischen_erd_und_rm"></a>1.4. Übergang zwischen ERD und RM</h3>
-<div class="paragraph">
-<p>Ausgangspunkt ist ein vollständiges und richtiges ERD und Ziel ist die Darstellung der Relationen.</p>
-</div>
-<div class="imageblock">
+<h3 id="_update"><a class="anchor" href="#_update"></a>1.2. UPDATE</h3>
+<div class="listingblock">
 <div class="content">
-<img src="../images/image-2022-06-08-22-31-10-976.png" alt="image 2022 06 08 22 31 10 976">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">UPDATE</span> <span class="k">table_name</span>
+<span class="k">SET</span> <span class="n">column1</span> <span class="o">=</span> <span class="n">value1</span><span class="p">,</span> <span class="n">column2</span> <span class="o">=</span> <span class="n">value2</span><span class="p">,</span> <span class="p">...</span>
+<span class="k">WHERE</span> <span class="n">condition</span><span class="p">;</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_tabelle"><a class="anchor" href="#_tabelle"></a>1.5. Tabelle</h3>
-<div class="paragraph">
-<p><strong>Merkmale:</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Name: eindeutiger Name</p>
-</li>
-<li>
-<p>Zeilen: hat mehrere Tupel, Reihenfolge egal da Zeileninhalt relevant ist</p>
-</li>
-<li>
-<p>Spalten: sind (eindeutige) Eigenschaften der Entität</p>
-</li>
-<li>
-<p>Werte: eine bestimmte Spalte enthält Attributwerte als Daten</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_primärschlüssel"><a class="anchor" href="#_primärschlüssel"></a>1.6. Primärschlüssel</h3>
-<div class="paragraph">
-<p>Jede Tabelle hat einen oder mehrere Schlüsselkandidaten, die entweder aus einem oder mehreren Werten zusammengesetzt werden kann.
-Diese Kombination ermöglicht den eindeutigen Zugriff auf eine bestimmte Zeile in einer bestimmten Tabelle.
-Ein Primärschlüssel ist ein festgelegter Schlüssel der Schlüsselkandidaten.
-Schlüsselkandidaten, die nicht als PK definiert sind, nennt man Foreign Key (dienen als Verweis auf eine andere Tabelle)</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_eigenschaften_eines_pks"><a class="anchor" href="#_eigenschaften_eines_pks"></a>1.7. Eigenschaften eines PK´s:</h3>
-<div class="paragraph">
-<p>Schlüsselkandidaten, die nicht als PK definiert sind, nennt man Foreign Key (dienen als Verweis auf eine andere Tabelle)</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Eindeutigkeit (eh selbstverständlich)</p>
-</li>
-<li>
-<p>Kürze, Schreibbarkeit: kurz und leicht formuliert</p>
-</li>
-<li>
-<p>Sprechend: aus dem PK sollten Eigenschaften der Entität erkennbar sein. Kann im Widerspruch mit den anderen Eigenschaften eine PK sein</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_fremdschlüssel"><a class="anchor" href="#_fremdschlüssel"></a>1.8. Fremdschlüssel</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>FK kann Teil des PK sein</p>
-</li>
-<li>
-<p>FK kann im Gegensatz zum PK NULL sein</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Vorgehensweise:</strong></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Jede Entitätsmenge wird eine Relation mit PK (z.B.: Mitarbeiter (MitarbNR, …))</p>
-</li>
-<li>
-<p>1: n Beziehungen werden Fremdschlüssel</p>
-<div class="olist loweralpha">
-<ol class="loweralpha">
-<li>
-<p>Der PK der 1-Seite wird als FK in der n-Seite eingefügt</p>
-</li>
-</ol>
-</div>
-</li>
-<li>
-<p>m: n Beziehungen werden assoziative Tabellen</p>
-<div class="olist loweralpha">
-<ol class="loweralpha">
-<li>
-<p>assoziativ Tabelle enthält einen eigenen (oder Kombination der PK) PK und den der n- und m-Seite</p>
-</li>
-</ol>
-</div>
-</li>
-<li>
-<p>Eigenschaften werden zu Spalten</p>
-</li>
-<li>
-<p>Jede Beziehung wird zum FK</p>
-<div class="olist loweralpha">
-<ol class="loweralpha">
-<li>
-<p>1:1</p>
-</li>
-<li>
-<p>Rekursive Beziehungen</p>
-</li>
-</ol>
-</div>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_notationen"><a class="anchor" href="#_notationen"></a>1.9. Notationen</h3>
-<div class="imageblock">
+<h3 id="_delete"><a class="anchor" href="#_delete"></a>1.3. DELETE</h3>
+<div class="listingblock">
 <div class="content">
-<img src="../images/image-2022-06-02-16-06-47-429.png" alt="image 2022 06 02 16 06 47 429">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">DELETE</span> <span class="k">FROM</span> <span class="k">table_name</span> <span class="k">WHERE</span> <span class="n">condition</span><span class="p">;</span></code></pre>
 </div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_anomalien"><a class="anchor" href="#_anomalien"></a>1.10. Anomalien</h3>
-<div class="paragraph">
-<p>Anomalien in Datenbanken treten bei einer nicht existierenden oder fehlerhaften Normalisierung auf.</p>
-</div>
-<div class="sect3">
-<h4 id="_einfügeinsert_anomalie"><a class="anchor" href="#_einfügeinsert_anomalie"></a>1.10.1. Einfüge(Insert)-Anomalie</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>Daten werden nicht in die Datenbank übernommen</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_änderungsupdate_anomalie"><a class="anchor" href="#_änderungsupdate_anomalie"></a>1.10.2. Änderungs(Update)-Anomalie</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>Gleiche Attribute werden nicht automatisch mitgeändert</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_löschdelete_anomalie"><a class="anchor" href="#_löschdelete_anomalie"></a>1.10.3. Lösch(Delete)-Anomalie</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>Informationen werden gelöscht, leider aber auch andere zusammenhängende Informationen</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_kardinalitäten"><a class="anchor" href="#_kardinalitäten"></a>1.11. Kardinalitäten</h3>
-<div class="sect3">
-<h4 id="_11_beziehung"><a class="anchor" href="#_11_beziehung"></a>1.11.1. 1:1 Beziehung</h4>
-<div class="paragraph">
-<p>Jedem Datensatz aus der Tabelle A ist nur ein passender Datensatz der Tabelle B zugeordnet</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_1n_beziehung"><a class="anchor" href="#_1n_beziehung"></a>1.11.2. 1:n Beziehung</h4>
-<div class="paragraph">
-<p>In einem Datensatz können in der Tabelle A mehrere passende Datensätze der Tabelle B eindeutig zugeordnet sein, aber in einem Datensatz der Tabelle B nie mehr als ein Datensatz der Tabelle A</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_mn_beziehung"><a class="anchor" href="#_mn_beziehung"></a>1.11.3. m:n Beziehung</h4>
-<div class="paragraph">
-<p>In Tabelle A können mehrere passende Datensätzen in Tabelle B zugeordnet sein und umgekehrt.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_constrains"><a class="anchor" href="#_constrains"></a>1.12. Constrains</h3>
-<div class="sect3">
-<h4 id="_null"><a class="anchor" href="#_null"></a>1.12.1. NULL</h4>
-<div class="paragraph">
-<p>Legt fest, dass eine Spalte NULL sein kann (optionale Eingabe, default).</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_not_null"><a class="anchor" href="#_not_null"></a>1.12.2. NOT NULL</h4>
-<div class="paragraph">
-<p>Legt fest, dass eine Spalte nicht NULL sein kann (Pflichteingabe).</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_unique"><a class="anchor" href="#_unique"></a>1.12.3. UNIQUE</h4>
-<div class="paragraph">
-<p>Bestimmt eine oder mehrere Spalten als eindeutigen Schlüssel.<br>
-Die Werte dieser Schlüsselspalten sind immer eindeutig.<br>
-Mehrere Unique Keys sind je Tabelle definierbar.<br>
-Für die Schlüsselspalten wird automatisch ein Index angelegt.<br>
-Es wird so das relationale Konzept der Zweitschlüssel implementiert.<br></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_primary_key"><a class="anchor" href="#_primary_key"></a>1.12.4. PRIMARY KEY</h4>
-<div class="paragraph">
-<p>Bestimmt eine oder mehrere Spalten als Primärschlüssel.<br>
-Die Werte dieser Schlüsselspalten sind immer eindeutig und dürfen nicht NULL sein (implizite NOT NULL-Bedingung). Maximal ist ein Primärschlüssel je Tabelle definierbar.<br>
-Für die Primärschlüsselspalten wird automatisch ein eindeutiger Index angelegt.<br></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_foreign_key"><a class="anchor" href="#_foreign_key"></a>1.12.5. FOREIGN KEY</h4>
-<div class="paragraph">
-<p>Bestimmt eine oder mehrere Spalten als Fremdschlüssel, die Primärschlüssel in einer anderen Tabelle sind und damit der referentiellen Integrität genügen müssen.<br>
-Foreign Keys realisieren 1:n Beziehungen aus dem ER-Modell.<br>
-Es ist das einziges Constraint mit Fehlerkorrektur-Möglichkeit.<br>
-Für Fremdschlüssel, die als Tabellenbedingung spezifiziert werden, muss die umfangreichere FOREIGN KEY-Syntax verwendet werden.<br></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_references"><a class="anchor" href="#_references"></a>1.12.6. REFERENCES</h4>
-<div class="paragraph">
-<p>Identifiziert die Master-Tabelle der Fremdschlüsselbeziehung.<br>
-Werden keine Spalten angegen, so werden automatisch die Primärschlüsselspalten der Master-Tabelle referenziert.<br>
-Die Klausel gehört zum FOREIGN-KEY-Constraint.<br>
-Als Spaltenbedingung ist diese Syntax ausreichend für die Definition eines Fremdschlüssels.<br></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_check"><a class="anchor" href="#_check"></a>1.12.7. CHECK</h4>
-<div class="paragraph">
-<p>Legt eine Bedingung fest, die jeder Datensatz der Tabelle erfüllen muss.<br>
-Bei ORACLE und DB/2 sind nur sehr eingeschränkte Suchbedingungen formulierbar, wie Vergleiche mit Konstanten bzw. zwischen zwei Spalten der zugehörigen Tabelle.<br>
-Es sind hier nicht wie im Standard-SQL SELECT-Anfragen auf andere Tabellen möglich.<br>
-Es ist noch nicht einmal möglich, in einem CHECK-CONSTRAINT die Systemvariable SYSDATE zu verwenden.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_normalformen"><a class="anchor" href="#_normalformen"></a>1.13. Normalformen</h3>
-<div class="sect3">
-<h4 id="_nullte_normalform"><a class="anchor" href="#_nullte_normalform"></a>1.13.1. Nullte Normalform</h4>
-<div class="paragraph">
-<p>Alle Informationen eine Tabelle sind vorhanden und noch unnormalisiert</p>
-</div>
-<div class="paragraph">
-<p>Beispiel: Rechnungsinformation</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/image-2022-06-02-16-17-04-698.png" alt="image 2022 06 02 16 17 04 698">
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_erste_normalform_1nf"><a class="anchor" href="#_erste_normalform_1nf"></a>1.13.2. Erste Normalform (1NF)</h4>
-<div class="paragraph">
-<p>Eine Tabelle befindet sich in der ersten Normalform (1NF), wenn die Wertebereiche der Attribute des Relationstypen atomar sind.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/image-2022-06-02-16-17-26-533.png" alt="image 2022 06 02 16 17 26 533">
-</div>
-<div class="title">Figure 2. davor</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/image-2022-06-02-16-17-31-350.png" alt="image 2022 06 02 16 17 31 350">
-</div>
-<div class="title">Figure 3. danach</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_zweite_normalform_2nf"><a class="anchor" href="#_zweite_normalform_2nf"></a>1.13.3. Zweite Normalform (2NF)</h4>
-<div class="paragraph">
-<p>Eine Tabelle befindet sich genau dann in der zweiten Normalform (2NF), wenn er sich in der ersten Normalform (1NF) befindet und jedes Nichtschlüsselattribut von jedem Schlüsselkandidaten voll funktional abhängig ist.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/image-2022-06-02-16-17-45-327.png" alt="image 2022 06 02 16 17 45 327">
-</div>
-<div class="title">Figure 4. davor</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/image-2022-06-02-16-18-15-002.png" alt="image 2022 06 02 16 18 15 002">
-</div>
-<div class="title">Figure 5. danach</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_dritte_normalform_3nf"><a class="anchor" href="#_dritte_normalform_3nf"></a>1.13.4. Dritte Normalform (3NF)</h4>
-<div class="paragraph">
-<p>Ein Relationstyp befindet sich genau dann in der dritten Normalform (3NF), wenn er sich in der zweiten Normalform (2NF) befindet und kein Nichtschlüsselattribut transitiv von einem Kandidatenschlüssel abhängt.</p>
-</div>
-<div class="paragraph">
-<p><strong>Transitiv Abhängig:</strong> Eine transitive Abhängigkeit liegt dann vor, wenn Y von X funktional abhängig und Z von Y, so ist Z von X funktional abhängig.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/image-2022-06-02-16-18-33-808.png" alt="image 2022 06 02 16 18 33 808">
-</div>
-<div class="title">Figure 6. davor</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/image-2022-06-02-16-18-37-952.png" alt="image 2022 06 02 16 18 37 952">
-</div>
-<div class="title">Figure 7. danach</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_bcnf"><a class="anchor" href="#_bcnf"></a>1.14. BCNF</h3>
-<div class="paragraph">
-<p>Ein Attribut A wird Determinante genannt, wenn von A ein anderes Attribut B voll funktional abhängig ist. Eine Relation ist in Boyce-Codd Normalform, wenn jedes Attribut, das eine Determinante ist, auch als Schlüssel verwendet werden könnte. Eine Relation ist dann in BCNF, wenn alle Determinanten zugleich Schlüsselkandidaten sind.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/image-2022-06-08-22-43-19-403.png" alt="image 2022 06 08 22 43 19 403">
-</div>
-</div>
-<div class="paragraph">
-<p><strong>Keine Ahnung</strong></p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_nosql"><a class="anchor" href="#_nosql"></a>2. NOSQL</h2>
+<h2 id="_select"><a class="anchor" href="#_select"></a>2. SELECT</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_allgemein"><a class="anchor" href="#_allgemein"></a>2.1. Allgemein</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>Not only SQL</p>
-</li>
-<li>
-<p>Datenbanksystem mit nicht-relationalem Ansatz</p>
-</li>
-</ul>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">SELECT</span> <span class="p">....</span>
+<span class="k">FROM</span> <span class="p">....</span>
+<span class="p">[</span><span class="k">WHERE</span> <span class="p">....]</span>
+<span class="p">[</span><span class="k">CONNECT</span> <span class="k">BY</span> <span class="p">....]</span>
+<span class="p">[</span><span class="k">GROUP</span> <span class="k">BY</span> <span class="p">....</span>
+<span class="p">[</span><span class="k">HAVING</span> <span class="p">....]]</span>
+<span class="p">[</span><span class="k">ORDER</span> <span class="k">BY</span> <span class="p">....]</span></code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_hauptkategorien"><a class="anchor" href="#_hauptkategorien"></a>2.2. Hauptkategorien</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>Key-Value</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Redis</p>
-</li>
-<li>
-<p>Amazon Webservices – S3</p>
-</li>
-</ul>
+<h3 id="_statische_funktionen"><a class="anchor" href="#_statische_funktionen"></a>2.1. Statische Funktionen</h3>
+<div class="imageblock">
+<div class="content">
+<img src="../images/image-2022-06-08-23-02-21-678.png" alt="image 2022 06 08 23 02 21 678">
 </div>
-</li>
-<li>
-<p>Document</p>
-<div class="ulist">
-<ul>
-<li>
-<p>MongoDB</p>
-</li>
-<li>
-<p>CouchDB</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Wide-Column</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Cassandra</p>
-</li>
-<li>
-<p>Google Datastore</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Graph</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Neo4j</p>
-</li>
-<li>
-<p>InfiniteGraph</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_acid"><a class="anchor" href="#_acid"></a>3. ACID</h2>
+<h2 id="_view"><a class="anchor" href="#_view"></a>3. View</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>ACID beschreibt Regeln und Eigenschaften zur Durchführung von Transaktionen in Datenbankmanagementsystemen.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">CREATE</span> <span class="k">VIEW</span> <span class="n">v_players</span> <span class="k">AS</span>
+<span class="k">SELECT</span> <span class="n">p</span><span class="p">.</span><span class="n">playerno</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="k">sum</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span> <span class="k">AS</span> <span class="n">amount_total</span>
+<span class="k">FROM</span> <span class="n">players</span> <span class="n">p</span><span class="p">,</span> <span class="n">penalties</span> <span class="n">pe</span>
+<span class="k">WHERE</span> <span class="n">p</span><span class="p">.</span><span class="n">playerno</span> <span class="o">=</span> <span class="n">pe</span><span class="p">.</span><span class="n">playerno</span><span class="p">(</span><span class="o">+</span><span class="p">)</span>
+<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">p</span><span class="p">.</span><span class="n">playerno</span><span class="p">,</span><span class="n">name</span><span class="p">;</span></code></pre>
 </div>
-<div class="paragraph">
-<p><strong>ACID hat nichts mit NoSql zutun!</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Atomarität</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Alles oder nichts bei Transaktionen</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Konsistenz</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Transaktionen behalten oder erzeugen neuen gültigen Zustand</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Isolation</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Transaktionen stören sich nicht gegenseitig</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Dauerhaftigkeit</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Daten einer erfolgreichen Transaktionen dauerhaft</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_cap_theorem"><a class="anchor" href="#_cap_theorem"></a>4. CAP-Theorem</h2>
+<h2 id="_join"><a class="anchor" href="#_join"></a>4. JOIN</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Das CAP-Theorem oder Brewers Theorem besagt, dass es in einem verteilten System unmöglich ist, gleichzeitig die drei Eigenschaften Consistency <strong>(Konsistenz)</strong>, Availability <strong>(Verfügbarkeit)</strong> und Partition Tolerance <strong>(Ausfalltoleranz)</strong> zu garantieren.</p>
+<div class="sect2">
+<h3 id="_natural_join"><a class="anchor" href="#_natural_join"></a>4.1. Natural JOIN</h3>
+<div class="listingblock">
+<div class="title">version 1</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="n">emp</span><span class="p">.</span><span class="n">ENAME</span><span class="p">,</span><span class="n">dept</span><span class="p">.</span><span class="n">DNAME</span> <span class="k">from</span> <span class="n">emp</span><span class="p">,</span> <span class="n">dept</span>
+<span class="k">where</span> <span class="n">emp</span><span class="p">.</span><span class="n">deptno</span><span class="o">=</span><span class="n">dept</span><span class="p">.</span><span class="n">DEPTNO</span><span class="p">;</span></code></pre>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Konsistenz</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Jeder Leser bekommt die aktuellsten Daten</p>
-</li>
-</ul>
 </div>
-</li>
-<li>
-<p>Verfügbarkeit</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Man bekommt immer eine Antwort</p>
-</li>
-</ul>
+<div class="listingblock">
+<div class="title">version 2</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="n">d</span><span class="p">.</span><span class="n">deptno</span><span class="p">,</span><span class="n">e</span><span class="p">.</span><span class="n">ENAME</span><span class="p">,</span><span class="n">d</span><span class="p">.</span><span class="n">DNAME</span> <span class="k">from</span> <span class="n">emp</span> <span class="n">e</span><span class="p">,</span>
+<span class="n">dept</span> <span class="n">d</span> <span class="k">where</span> <span class="n">e</span><span class="p">.</span><span class="n">deptno</span><span class="o">=</span><span class="n">d</span><span class="p">.</span><span class="n">DEPTNO</span><span class="p">;</span></code></pre>
 </div>
-</li>
-<li>
-<p>Ausfalltoleranz</p>
-<div class="ulist">
-<ul>
-<li>
-<p>System arbeitet auch weiter, wenn Nachrichten zu spät (oder gar nicht) ankommen</p>
-</li>
-</ul>
 </div>
-</li>
-</ul>
+</div>
+<div class="sect2">
+<h3 id="_cross_join"><a class="anchor" href="#_cross_join"></a>4.2. Cross JOIN</h3>
+<div class="listingblock">
+<div class="title">version 1</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">dept</span><span class="p">,</span><span class="n">emp</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">version 2</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">emp</span> <span class="k">cross</span> <span class="k">join</span> <span class="n">dept</span><span class="p">;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using"><a class="anchor" href="#_using"></a>4.3. USING</h3>
+<div class="listingblock">
+<div class="title">version 1</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="n">emp</span><span class="p">.</span><span class="n">ENAME</span><span class="p">,</span><span class="n">dept</span><span class="p">.</span><span class="n">DNAME</span> <span class="k">from</span> <span class="n">emp</span> <span class="k">Join</span>
+<span class="n">dept</span> <span class="k">using</span> <span class="p">(</span><span class="n">deptno</span><span class="p">);</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">version 2</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="n">emp</span><span class="p">.</span><span class="n">ENAME</span><span class="p">,</span><span class="n">dept</span><span class="p">.</span><span class="n">DNAME</span> <span class="k">from</span> <span class="n">emp</span>
+<span class="k">Join</span> <span class="n">dept</span> <span class="k">using</span> <span class="p">(</span><span class="n">deptno</span><span class="p">,</span><span class="n">deptno</span><span class="p">);</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_on"><a class="anchor" href="#_on"></a>4.4. ON</h3>
+<div class="listingblock">
+<div class="title">version 1</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="n">emp</span><span class="p">.</span><span class="n">ENAME</span><span class="p">,</span><span class="n">dept</span><span class="p">.</span><span class="n">DNAME</span> <span class="k">from</span> <span class="n">emp</span>
+<span class="k">Join</span> <span class="n">dept</span> <span class="k">on</span> <span class="p">(</span><span class="n">dept</span><span class="p">.</span><span class="n">deptno</span><span class="o">=</span><span class="n">emp</span><span class="p">.</span><span class="n">deptno</span><span class="p">);</span></code></pre>
+</div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="../images/image-2022-06-08-22-43-39-073.png" alt="image 2022 06 08 22 43 39 073">
+<img src="../images/image-2022-06-08-23-14-11-892.png" alt="image 2022 06 08 23 14 11 892">
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_mongodb"><a class="anchor" href="#_mongodb"></a>5. MongoDB</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Consistency</p>
-</li>
-<li>
-<p>Partition-Tolerance</p>
-</li>
-<li>
-<p>Dokumentenorientiert (JSON)</p>
-</li>
-<li>
-<p>Schema-frei</p>
-</li>
-<li>
-<p>Open Source</p>
-</li>
-<li>
-<p>Cross-Platform</p>
-</li>
-</ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_aufbau"><a class="anchor" href="#_aufbau"></a>6. Aufbau</h2>
+<h2 id="_subselect"><a class="anchor" href="#_subselect"></a>5. Subselect</h2>
 <div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Database</p>
-</li>
-<li>
-<p>Collection</p>
-</li>
-<li>
-<p>Documents</p>
-</li>
-<li>
-<p>Fields</p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_json"><a class="anchor" href="#_json"></a>7. JSON</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Vorgänger &#8594; XML</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>JavaScript Object Notation</p>
-</li>
-<li>
-<p>Wird zum Datenaustausch verwendet</p>
-</li>
-<li>
-<p>Einfach zu lesen / schreiben / parsen / generieren</p>
-</li>
-<li>
-<p>Verschachtelungen beliebig möglich</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_bson"><a class="anchor" href="#_bson"></a>8. BSON</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Binary JSON, bietet zusätzlich den Datentyp Date an</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_mongodb_use_cases"><a class="anchor" href="#_mongodb_use_cases"></a>9. MongoDB use cases</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Bei hohem Schreibaufkommen</p>
-</li>
-<li>
-<p>“unvorhersehbares” Schema</p>
-</li>
-<li>
-<p>Sehr große Datenbank</p>
-</li>
-<li>
-<p>Ausfallsicherheit</p>
-</li>
-<li>
-<p>Mehr Performance, da Joins vermieden werden</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_grund_befehle"><a class="anchor" href="#_grund_befehle"></a>10. Grund Befehle</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Keine Ahnung ob das kommt?</strong></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_fragen"><a class="anchor" href="#_fragen"></a>11. Fragen</h2>
-<div class="sectionbody">
-<div class="exampleblock">
+<div class="listingblock">
+<div class="title">version 1</div>
 <div class="content">
-<div class="paragraph">
-<p><strong>Referat:</strong> Datenmodellierung</p>
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">players</span>
+<span class="k">WHERE</span> <span class="k">EXISTS</span> <span class="p">(</span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">penalties</span> <span class="k">WHERE</span>
+<span class="n">playerno</span><span class="o">=</span><span class="n">players</span><span class="p">.</span><span class="n">playerno</span><span class="p">);</span></code></pre>
 </div>
-<div class="paragraph">
-<p>&#8230;&#8203;</p>
 </div>
-<div class="paragraph">
-<p><strong>Referat:</strong> NoSQL</p>
+<div class="listingblock">
+<div class="title">version 2</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="n">playerno</span><span class="p">,</span> <span class="n">name</span>
+<span class="k">from</span> <span class="n">players</span> <span class="n">p</span>
+<span class="k">where</span> <span class="k">not</span> <span class="k">exists</span>
+    <span class="p">(</span><span class="k">select</span> <span class="o">*</span>
+    <span class="k">from</span> <span class="n">penalties</span>
+    <span class="k">where</span> <span class="n">playerno</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">playerno</span>
+      <span class="k">and</span> <span class="n">amount</span> <span class="o">&lt;=</span> <span class="mi">50</span><span class="p">)</span>
+<span class="k">and</span> <span class="k">exists</span>
+    <span class="p">(</span><span class="k">select</span> <span class="o">*</span>
+    <span class="k">from</span> <span class="n">penalties</span>
+    <span class="k">where</span> <span class="n">playerno</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">playerno</span><span class="p">);</span></code></pre>
 </div>
-<div class="paragraph">
-<p><strong>Frage:</strong> <em>Welche Hauptkategorien gibt es</em></p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Key Value</p>
-</li>
-<li>
-<p>Document</p>
-</li>
-<li>
-<p>Wide-Column</p>
-</li>
-<li>
-<p>Graph</p>
-</li>
-</ul>
 </div>
-<div class="paragraph">
-<p><strong>Frage:</strong> <em>Nenne jeweils ein Bsp.</em></p>
 </div>
-<div class="paragraph">
-<p><code>siehe Referat</code></p>
+<div class="sect1">
+<h2 id="_group_by"><a class="anchor" href="#_group_by"></a>6. Group By</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">SELECT</span> <span class="n">name</span><span class="p">,</span> <span class="n">initials</span><span class="p">,</span> <span class="k">SUM</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">players</span> <span class="n">pl</span><span class="p">,</span> <span class="n">penalties</span> <span class="n">pe</span>
+<span class="k">WHERE</span> <span class="n">pl</span><span class="p">.</span><span class="n">playerno</span> <span class="o">=</span> <span class="n">pe</span><span class="p">.</span><span class="n">playerno</span> <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">name</span><span class="p">,</span> <span class="n">initials</span></code></pre>
 </div>
-<div class="paragraph">
-<p><strong>Frage:</strong> <em>Warum wird ACID bei NoSQL verwendet</em></p>
 </div>
-<div class="paragraph">
-<p><strong>Antwort:</strong> Es gehört nicht dazu. ACID hat nichts mit NoSql zutun.</p>
 </div>
-<div class="paragraph">
-<p><strong>Frage:</strong> <em>Welche Constrains gibt es</em></p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Unique</p>
-</li>
-<li>
-<p>FK</p>
-</li>
-<li>
-<p>PK<br>
-&#8230;&#8203;</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Frage:</strong> <em>Welche zwei Bereiche erfühlt die MongoDB</em></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Consistency</p>
-</li>
-<li>
-<p>Partition-Tolerance<br>
-<code>Siege Referat, CAP-Theorem, Bild</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Frage:</strong> <em>Was war der Vorgänger von JSON</em></p>
-</div>
-<div class="paragraph">
-<p><strong>Antwort:</strong> XML</p>
-</div>
-<div class="paragraph">
-<p><strong>Frage:</strong> <em>Grundfrage: Was is besser, Relationale DB oder NoSql</em></p>
-</div>
-<div class="paragraph">
-<p><strong>Antwort:</strong> Kann man nicht sagen. Relationale Datenbanken sind "Ordentlicher" als NoSql Datenbanken.
-Es kommt auf den UseCase an.</p>
-</div>
-<div class="paragraph">
-<p><strong>Frage:</strong> <em>Gibt es in Mongo FK</em></p>
-</div>
-<div class="paragraph">
-<p><strong>Antwort</strong>: Grundsätzlich nein, weil es ja keine Relationale Datenbank ist.</p>
-</div>
+<div class="sect1">
+<h2 id="_objektprivilegien"><a class="anchor" href="#_objektprivilegien"></a>7. Objektprivilegien</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="../images/image-2022-06-08-23-09-05-248.png" alt="image 2022 06 08 23 09 05 248">
 </div>
 </div>
 </div>
@@ -1313,5 +675,216 @@ Es kommt auf den UseCase an.</p>
 Last updated 2022-06-08 21:17:32 UTC
 </div>
 </div>
+<style>
+pre.rouge table td { padding: 5px; }
+pre.rouge table pre { margin: 0; }
+pre.rouge .cm {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cp {
+  color: #999999;
+  font-weight: bold;
+}
+pre.rouge .c1 {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cs {
+  color: #999999;
+  font-weight: bold;
+  font-style: italic;
+}
+pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cpf {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .err {
+  color: #a61717;
+  background-color: #e3d2d2;
+}
+pre.rouge .gd {
+  color: #000000;
+  background-color: #ffdddd;
+}
+pre.rouge .ge {
+  color: #000000;
+  font-style: italic;
+}
+pre.rouge .gr {
+  color: #aa0000;
+}
+pre.rouge .gh {
+  color: #999999;
+}
+pre.rouge .gi {
+  color: #000000;
+  background-color: #ddffdd;
+}
+pre.rouge .go {
+  color: #888888;
+}
+pre.rouge .gp {
+  color: #555555;
+}
+pre.rouge .gs {
+  font-weight: bold;
+}
+pre.rouge .gu {
+  color: #aaaaaa;
+}
+pre.rouge .gt {
+  color: #aa0000;
+}
+pre.rouge .kc {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kd {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kn {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kp {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kr {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kt {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .k, pre.rouge .kv {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .mf {
+  color: #009999;
+}
+pre.rouge .mh {
+  color: #009999;
+}
+pre.rouge .il {
+  color: #009999;
+}
+pre.rouge .mi {
+  color: #009999;
+}
+pre.rouge .mo {
+  color: #009999;
+}
+pre.rouge .m, pre.rouge .mb, pre.rouge .mx {
+  color: #009999;
+}
+pre.rouge .sb {
+  color: #d14;
+}
+pre.rouge .sc {
+  color: #d14;
+}
+pre.rouge .sd {
+  color: #d14;
+}
+pre.rouge .s2 {
+  color: #d14;
+}
+pre.rouge .se {
+  color: #d14;
+}
+pre.rouge .sh {
+  color: #d14;
+}
+pre.rouge .si {
+  color: #d14;
+}
+pre.rouge .sx {
+  color: #d14;
+}
+pre.rouge .sr {
+  color: #009926;
+}
+pre.rouge .s1 {
+  color: #d14;
+}
+pre.rouge .ss {
+  color: #990073;
+}
+pre.rouge .s, pre.rouge .sa, pre.rouge .dl {
+  color: #d14;
+}
+pre.rouge .na {
+  color: #008080;
+}
+pre.rouge .bp {
+  color: #999999;
+}
+pre.rouge .nb {
+  color: #0086B3;
+}
+pre.rouge .nc {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .no {
+  color: #008080;
+}
+pre.rouge .nd {
+  color: #3c5d5d;
+  font-weight: bold;
+}
+pre.rouge .ni {
+  color: #800080;
+}
+pre.rouge .ne {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nf, pre.rouge .fm {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nl {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nn {
+  color: #555555;
+}
+pre.rouge .nt {
+  color: #000080;
+}
+pre.rouge .vc {
+  color: #008080;
+}
+pre.rouge .vg {
+  color: #008080;
+}
+pre.rouge .vi {
+  color: #008080;
+}
+pre.rouge .nv, pre.rouge .vm {
+  color: #008080;
+}
+pre.rouge .ow {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .o {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .w {
+  color: #bbbbbb;
+}
+pre.rouge {
+  background-color: #f8f8f8;
+}
+</style>
 </body>
 </html>
