@@ -1,0 +1,162 @@
+= SQL Data Retrieval und DML
+
+== Manipulation
+
+=== INSERT
+
+.version 1
+[source,sql]
+----
+INSERT INTO dept (deptno, dname)
+ VALUES (60, 'MIS');
+----
+
+.version 2
+[source,sql]
+----
+INSERT INTO dept
+ VALUES (60, 'MIS', NULL);
+----
+
+=== UPDATE
+
+[source,sql]
+----
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+----
+
+=== DELETE
+
+[source,sql]
+----
+DELETE FROM table_name WHERE condition;
+----
+
+== SELECT
+
+[source,sql]
+----
+SELECT ....
+FROM ....
+[WHERE ....]
+[CONNECT BY ....]
+[GROUP BY ....
+[HAVING ....]]
+[ORDER BY ....]
+
+----
+
+=== Statische Funktionen
+
+image::../images/image-2022-06-08-23-02-21-678.png[]
+
+== View
+
+
+[source,sql]
+----
+CREATE VIEW v_players AS
+SELECT p.playerno,name,sum(amount) AS amount_total
+FROM players p, penalties pe
+WHERE p.playerno = pe.playerno(+)
+GROUP BY p.playerno,name;
+----
+
+== JOIN
+
+=== Natural JOIN
+
+.version 1
+[source,sql]
+----
+select emp.ENAME,dept.DNAME from emp, dept
+where emp.deptno=dept.DEPTNO;
+----
+
+.version 2
+[source,sql]
+----
+select d.deptno,e.ENAME,d.DNAME from emp e,
+dept d where e.deptno=d.DEPTNO;
+----
+
+=== Cross JOIN
+
+.version 1
+[source,sql]
+----
+select * from dept,emp
+----
+
+.version 2
+[source,sql]
+----
+select * from emp cross join dept;
+----
+
+=== USING
+
+.version 1
+[source,sql]
+----
+select emp.ENAME,dept.DNAME from emp Join
+dept using (deptno);
+----
+
+.version 2
+[source,sql]
+----
+select emp.ENAME,dept.DNAME from emp
+Join dept using (deptno,deptno);
+----
+
+=== ON
+
+.version 1
+[source,sql]
+----
+select emp.ENAME,dept.DNAME from emp
+Join dept on (dept.deptno=emp.deptno);
+----
+
+image::../images/image-2022-06-08-23-14-11-892.png[]
+
+== Subselect
+
+.version 1
+[source,sql]
+----
+SELECT * FROM players
+WHERE EXISTS (SELECT * FROM penalties WHERE
+playerno=players.playerno);
+----
+
+.version 2
+[source,sql]
+----
+select playerno, name
+from players p
+where not exists
+    (select *
+    from penalties
+    where playerno = p.playerno
+      and amount <= 50)
+and exists
+    (select *
+    from penalties
+    where playerno = p.playerno);
+----
+
+== Group By
+
+[source,sql]
+----
+SELECT name, initials, SUM(amount) FROM players pl, penalties pe
+WHERE pl.playerno = pe.playerno GROUP BY name, initials
+----
+
+== Objektprivilegien
+
+image::../images/image-2022-06-08-23-09-05-248.png[]

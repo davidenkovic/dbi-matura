@@ -3,8 +3,8 @@
 == Themen
 
 1. link:https://davidenkovic.github.io/dbi-matura/pool-1.html[Grundlagen der Datenbanktechnologien]
-2. Konzeptionelles Modell
-3. SQL Data Retrieval und DML
+2. link:https://davidenkovic.github.io/dbi-matura/pool-2.html[Konzeptionelles Modell]
+3. link:https://davidenkovic.github.io/dbi-matura/pool-3.html[SQL Data Retrieval und DML]
 4. SQL DCL und DDL
 5. Datenbankadministration und internes Modell
 6. Semistrukturierte Daten und prozedurale Erweiterung

@@ -2,27 +2,118 @@
 
 == Datenmodellierung
 
-=== ERD aus Angabe lesen
+*Entität:* Eine Entität ist ein individuelles und identifizierbares Exemplar von Dingen, Personen oder Begriffen der realen oder der Vorstellungswelt.
 
-*Üben!*
+*Assoziation*: +
+
+Eine Assoziation legt fest wie zwei Entitäten zusammenhängen:
+
+* 1: genau eins
+* c: keins oder eins
+* m: mindestens eins
+* mc: keins, eins, oder mehrere Gegenassoziation
+
+.Gegenassoziation
+image::../images/image-2022-06-08-19-11-11-507.png[]
+
+=== Wertebereiche, Attribute, Formatierung
+
+Ein Wertebereich (Domain) ist eine Menge von verschiedenen Datenwerten desselben Datentyps. +
+
+Ein Attribut beschreibt eine bestimmte Eigenschaft der Entität einer Entitätsmenge. Diese Eigenschaftswert können nur bestimmte Werte annehmen, die in einem Wertebereich definiert sind.
+
+=== Namensgebung
+
+*Entität:*
+
+* stets im Singular
+* wenn möglich keine Abkürzungen
+* Einheitlich bleiben (und auch konsistent)
+* Begriffe der Geschäftswelt verwenden
+* keine EDV-Fachausdrücke (Zielgruppe ist ja die Fachabteilung)
+* Keine Synonyme (verschiedene Wörter für gleiche Begriffe) zB.: BANK, Geldinstitut
+* Keine Homonyme (1 Wort mit mehreren Bedeutungen) zB.: BANK (Sitzbank, Geldinstitut)
+
+*Assoziation:*
+
+* Verben
+* In beiden Richtungen Namen vergeben
+
+=== Relationales Modell
+
+anstatt Daten abstrakt (ERD) darzustellen wird im RM eine datennähere Illustration verwendet.
+
+image::../images/image-2022-06-08-22-30-35-734.png[]
+
+*Tupel:* Eine Tabelle ist eine Menge von Tupeln; ein Tupel ist eine Liste von Werten und entspricht einer Tabellenzeile.
+
+=== Übergang zwischen ERD und RM
+
+Ausgangspunkt ist ein vollständiges und richtiges ERD und Ziel ist die Darstellung der Relationen.
+
+image::../images/image-2022-06-08-22-31-10-976.png[]
+
+=== Tabelle
+
+*Merkmale:*
+
+* Name: eindeutiger Name
+* Zeilen: hat mehrere Tupel, Reihenfolge egal da Zeileninhalt relevant ist
+* Spalten: sind (eindeutige) Eigenschaften der Entität
+* Werte: eine bestimmte Spalte enthält Attributwerte als Daten
+
+=== Primärschlüssel
+
+Jede Tabelle hat einen oder mehrere Schlüsselkandidaten, die entweder aus einem oder mehreren Werten zusammengesetzt werden kann.
+Diese Kombination ermöglicht den eindeutigen Zugriff auf eine bestimmte Zeile in einer bestimmten Tabelle.
+Ein Primärschlüssel ist ein festgelegter Schlüssel der Schlüsselkandidaten.
+Schlüsselkandidaten, die nicht als PK definiert sind, nennt man Foreign Key (dienen als Verweis auf eine andere Tabelle)
+
+=== Eigenschaften eines PK´s:
+
+Schlüsselkandidaten, die nicht als PK definiert sind, nennt man Foreign Key (dienen als Verweis auf eine andere Tabelle)
+
+* Eindeutigkeit (eh selbstverständlich)
+* Kürze, Schreibbarkeit: kurz und leicht formuliert
+* Sprechend: aus dem PK sollten Eigenschaften der Entität erkennbar sein. Kann im Widerspruch mit den anderen Eigenschaften eine PK sein
+
+=== Fremdschlüssel
+
+* FK kann Teil des PK sein
+* FK kann im Gegensatz zum PK NULL sein
+
+*Vorgehensweise:*
+
+1.	Jede Entitätsmenge wird eine Relation mit PK (z.B.: Mitarbeiter (MitarbNR, …))
+2.	1: n Beziehungen werden Fremdschlüssel
+a.	Der PK der 1-Seite wird als FK in der n-Seite eingefügt
+3.	m: n Beziehungen werden assoziative Tabellen
+a.	assoziativ Tabelle enthält einen eigenen (oder Kombination der PK) PK und den der n- und m-Seite
+4.	Eigenschaften werden zu Spalten
+5.	Jede Beziehung wird zum FK
+a.	1:1
+b.	Rekursive Beziehungen
+
 
 === Notationen
 
-image::images/image-2022-06-02-16-06-47-429.png[]
+image::../images/image-2022-06-02-16-06-47-429.png[]
 
 === Anomalien
 
 Anomalien in Datenbanken treten bei einer nicht existierenden oder fehlerhaften Normalisierung auf.
 
 ==== Einfüge(Insert)-Anomalie
+
 * Daten werden nicht in die Datenbank übernommen
 
 ==== Änderungs(Update)-Anomalie
+
 * Gleiche Attribute werden nicht automatisch mitgeändert
 
 ==== Lösch(Delete)-Anomalie
-* Informationen werden gelöscht, leider aber auch andere zusammenhängende Informationen
 
+* Informationen werden gelöscht, leider aber auch andere zusammenhängende Informationen
 
 === Kardinalitäten
 
@@ -90,39 +181,46 @@ Alle Informationen eine Tabelle sind vorhanden und noch unnormalisiert
 
 Beispiel: Rechnungsinformation
 
-image::images/image-2022-06-02-16-17-04-698.png[]
+image::../images/image-2022-06-02-16-17-04-698.png[]
 
 ==== Erste Normalform (1NF)
 
-Eine Relation ist in der 1 NF, wenn alle Attributwerte atomar sind.
+Eine Tabelle befindet sich in der ersten Normalform (1NF), wenn die Wertebereiche der Attribute des Relationstypen atomar sind.
 
 .davor
-image::images/image-2022-06-02-16-17-26-533.png[]
+image::../images/image-2022-06-02-16-17-26-533.png[]
 
 .danach
-image::images/image-2022-06-02-16-17-31-350.png[]
+image::../images/image-2022-06-02-16-17-31-350.png[]
 
 ==== Zweite Normalform (2NF)
 
-Eine Relation ist in der 2NF, wenn alle Nichtschlüsselattributwerte vom gesamten Primärschlüssel abhängig sind
+Eine Tabelle befindet sich genau dann in der zweiten Normalform (2NF), wenn er sich in der ersten Normalform (1NF) befindet und jedes Nichtschlüsselattribut von jedem Schlüsselkandidaten voll funktional abhängig ist.
 
 .davor
-image::images/image-2022-06-02-16-17-45-327.png[]
+image::../images/image-2022-06-02-16-17-45-327.png[]
 
 .danach
-image::images/image-2022-06-02-16-18-15-002.png[]
+image::../images/image-2022-06-02-16-18-15-002.png[]
 
 ==== Dritte Normalform (3NF)
 
-Eine Relation ist in der 3NF, wenn alle Nichtschlüsselattributwerte voneinander unabhängig sind.
+Ein Relationstyp befindet sich genau dann in der dritten Normalform (3NF), wenn er sich in der zweiten Normalform (2NF) befindet und kein Nichtschlüsselattribut transitiv von einem Kandidatenschlüssel abhängt.
+
+*Transitiv Abhängig:* Eine transitive Abhängigkeit liegt dann vor, wenn Y von X funktional abhängig und Z von Y, so ist Z von X funktional abhängig.
+
 
 .davor
-image::images/image-2022-06-02-16-18-33-808.png[]
+image::../images/image-2022-06-02-16-18-33-808.png[]
 
 .danach
-image::images/image-2022-06-02-16-18-37-952.png[]
+image::../images/image-2022-06-02-16-18-37-952.png[]
 
 === BCNF
+
+Ein Attribut A wird Determinante genannt, wenn von A ein anderes Attribut B voll funktional abhängig ist. Eine Relation ist in Boyce-Codd Normalform, wenn jedes Attribut, das eine Determinante ist, auch als Schlüssel verwendet werden könnte. Eine Relation ist dann in BCNF, wenn alle Determinanten zugleich Schlüsselkandidaten sind.
+
+image::../images/image-2022-06-08-22-43-19-403.png[]
 
 *Keine Ahnung*
 
@@ -178,7 +276,7 @@ Das CAP-Theorem oder Brewers Theorem besagt, dass es in einem verteilten System 
 * Ausfalltoleranz
 ** System arbeitet auch weiter, wenn Nachrichten zu spät (oder gar nicht) ankommen
 
-image::images/image-2022-06-07-14-19-59-216.png[]
+image::../images/image-2022-06-08-22-43-39-073.png[]
 
 == MongoDB
 
@@ -196,8 +294,6 @@ image::images/image-2022-06-07-14-19-59-216.png[]
 3. Documents
 4. Fields
 
-image::images/image-2022-06-07-14-26-02-925.png[]
-
 == JSON
 
 Vorgänger -> XML
@@ -206,6 +302,10 @@ Vorgänger -> XML
 * Wird zum Datenaustausch verwendet
 * Einfach zu lesen / schreiben / parsen / generieren
 * Verschachtelungen beliebig möglich
+
+== BSON
+
+Binary JSON, bietet zusätzlich den Datentyp Date an
 
 == MongoDB use cases
 
