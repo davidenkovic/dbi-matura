@@ -50,7 +50,7 @@ FROM ....
 
 === Statische Funktionen
 
-image::../images/image-2022-06-08-23-02-21-678.png[]
+image::images/image-2022-06-08-23-02-21-678.png[]
 
 == View
 
@@ -121,7 +121,7 @@ select emp.ENAME,dept.DNAME from emp
 Join dept on (dept.deptno=emp.deptno);
 ----
 
-image::../images/image-2022-06-08-23-14-11-892.png[]
+image::images/image-2022-06-08-23-14-11-892.png[]
 
 == Subselect
 
@@ -159,4 +159,4 @@ WHERE pl.playerno = pe.playerno GROUP BY name, initials
 
 == Objektprivilegien
 
-image::../images/image-2022-06-08-23-09-05-248.png[]
+image::images/image-2022-06-08-23-09-05-248.png[]

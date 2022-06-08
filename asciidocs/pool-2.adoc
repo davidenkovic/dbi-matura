@@ -8,12 +8,12 @@ link:https://davidenkovic.github.io/dbi-matura/pool-1.html[Grundlagen der Datenb
 
 === Subtypen, Supertypen
 
-image::../images/image-2022-06-08-18-30-46-274.png[]
+image::images/image-2022-06-08-18-30-46-274.png[]
 
 * Supertyp -> properties von der Basisklasse
 * Subtyp -> properties von klassen welcher von Basisklasse erbt bzw. diese beinhaltet
 
-image::../images/image-2022-06-08-22-46-10-038.png[]
+image::images/image-2022-06-08-22-46-10-038.png[]
 
 === Generalisation
 
@@ -38,13 +38,13 @@ link:https://davidenkovic.github.io/dbi-matura/pool-1.html[Grundlagen der Datenb
 
 * EMP Tabelle
 
-image::../images/image-2022-06-08-22-49-02-912.png[]
+image::images/image-2022-06-08-22-49-02-912.png[]
 
 == Stückliste
 
 * Rad besteht aus schrauben
 
-image::../images/image-2022-06-08-22-49-11-802.png[]
+image::images/image-2022-06-08-22-49-11-802.png[]
 
 == Konzeptuelles Schema
 

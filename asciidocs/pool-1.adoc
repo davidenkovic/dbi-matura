@@ -14,7 +14,7 @@ Eine Assoziation legt fest wie zwei Entitäten zusammenhängen:
 * mc: keins, eins, oder mehrere Gegenassoziation
 
 .Gegenassoziation
-image::../images/image-2022-06-08-19-11-11-507.png[]
+image::images/image-2022-06-08-19-11-11-507.png[]
 
 === Wertebereiche, Attribute, Formatierung
 
@@ -43,7 +43,7 @@ Ein Attribut beschreibt eine bestimmte Eigenschaft der Entität einer Entitätsm
 
 anstatt Daten abstrakt (ERD) darzustellen wird im RM eine datennähere Illustration verwendet.
 
-image::../images/image-2022-06-08-22-30-35-734.png[]
+image::images/image-2022-06-08-22-30-35-734.png[]
 
 *Tupel:* Eine Tabelle ist eine Menge von Tupeln; ein Tupel ist eine Liste von Werten und entspricht einer Tabellenzeile.
 
@@ -51,7 +51,7 @@ image::../images/image-2022-06-08-22-30-35-734.png[]
 
 Ausgangspunkt ist ein vollständiges und richtiges ERD und Ziel ist die Darstellung der Relationen.
 
-image::../images/image-2022-06-08-22-31-10-976.png[]
+image::images/image-2022-06-08-22-31-10-976.png[]
 
 === Tabelle
 
@@ -97,7 +97,7 @@ b.	Rekursive Beziehungen
 
 === Notationen
 
-image::../images/image-2022-06-02-16-06-47-429.png[]
+image::images/image-2022-06-02-16-06-47-429.png[]
 
 === Anomalien
 
@@ -181,27 +181,27 @@ Alle Informationen eine Tabelle sind vorhanden und noch unnormalisiert
 
 Beispiel: Rechnungsinformation
 
-image::../images/image-2022-06-02-16-17-04-698.png[]
+image::images/image-2022-06-02-16-17-04-698.png[]
 
 ==== Erste Normalform (1NF)
 
 Eine Tabelle befindet sich in der ersten Normalform (1NF), wenn die Wertebereiche der Attribute des Relationstypen atomar sind.
 
 .davor
-image::../images/image-2022-06-02-16-17-26-533.png[]
+image::images/image-2022-06-02-16-17-26-533.png[]
 
 .danach
-image::../images/image-2022-06-02-16-17-31-350.png[]
+image::images/image-2022-06-02-16-17-31-350.png[]
 
 ==== Zweite Normalform (2NF)
 
 Eine Tabelle befindet sich genau dann in der zweiten Normalform (2NF), wenn er sich in der ersten Normalform (1NF) befindet und jedes Nichtschlüsselattribut von jedem Schlüsselkandidaten voll funktional abhängig ist.
 
 .davor
-image::../images/image-2022-06-02-16-17-45-327.png[]
+image::images/image-2022-06-02-16-17-45-327.png[]
 
 .danach
-image::../images/image-2022-06-02-16-18-15-002.png[]
+image::images/image-2022-06-02-16-18-15-002.png[]
 
 ==== Dritte Normalform (3NF)
 
@@ -211,16 +211,16 @@ Ein Relationstyp befindet sich genau dann in der dritten Normalform (3NF), wenn 
 
 
 .davor
-image::../images/image-2022-06-02-16-18-33-808.png[]
+image::images/image-2022-06-02-16-18-33-808.png[]
 
 .danach
-image::../images/image-2022-06-02-16-18-37-952.png[]
+image::images/image-2022-06-02-16-18-37-952.png[]
 
 === BCNF
 
 Ein Attribut A wird Determinante genannt, wenn von A ein anderes Attribut B voll funktional abhängig ist. Eine Relation ist in Boyce-Codd Normalform, wenn jedes Attribut, das eine Determinante ist, auch als Schlüssel verwendet werden könnte. Eine Relation ist dann in BCNF, wenn alle Determinanten zugleich Schlüsselkandidaten sind.
 
-image::../images/image-2022-06-08-22-43-19-403.png[]
+image::images/image-2022-06-08-22-43-19-403.png[]
 
 *Keine Ahnung*
 
@@ -276,7 +276,7 @@ Das CAP-Theorem oder Brewers Theorem besagt, dass es in einem verteilten System 
 * Ausfalltoleranz
 ** System arbeitet auch weiter, wenn Nachrichten zu spät (oder gar nicht) ankommen
 
-image::../images/image-2022-06-08-22-43-39-073.png[]
+image::images/image-2022-06-08-22-43-39-073.png[]
 
 == MongoDB
 
