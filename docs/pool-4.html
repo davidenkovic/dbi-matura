@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
 <link rel="icon" type="image/png" href="themes/favicon.png">
-<title>SQL Data Retrieval und DML</title>
+<title>SQL DCL und DDL</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -440,144 +440,63 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>SQL Data Retrieval und DML</h1>
+<h1>SQL DCL und DDL</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_manipulation">1. Manipulation</a>
+<li><a href="#_constraints">1. Constraints</a></li>
+<li><a href="#_views">2. Views</a></li>
+<li><a href="#_optimierungen">3. Optimierungen</a>
 <ul class="sectlevel2">
-<li><a href="#_insert">1.1. INSERT</a></li>
-<li><a href="#_update">1.2. UPDATE</a></li>
-<li><a href="#_drop">1.3. DROP</a></li>
-<li><a href="#_delete">1.4. DELETE</a></li>
-<li><a href="#_alter_table">1.5. ALTER TABLE</a></li>
-<li><a href="#_truncate">1.6. Truncate</a></li>
+<li><a href="#_index">3.1. Index</a></li>
+<li><a href="#_oracle_optimizer">3.2. Oracle-Optimizer</a></li>
+<li><a href="#_regelbasierter_optimierer">3.3. Regelbasierter Optimierer</a></li>
+<li><a href="#_kostenbasierter_optimierer">3.4. Kostenbasierter Optimierer</a></li>
+<li><a href="#_execution_plans">3.5. Execution Plans</a></li>
+<li><a href="#_explain_plan">3.6. EXPLAIN PLAN</a></li>
+<li><a href="#_sql_hints">3.7. SQL Hints</a></li>
 </ul>
 </li>
-<li><a href="#_select">2. SELECT</a>
-<ul class="sectlevel2">
-<li><a href="#_statische_funktionen">2.1. Statische Funktionen</a></li>
-</ul>
-</li>
-<li><a href="#_view">3. View</a></li>
-<li><a href="#_join">4. JOIN</a>
-<ul class="sectlevel2">
-<li><a href="#_natural_join">4.1. Natural JOIN</a></li>
-<li><a href="#_cross_join">4.2. Cross JOIN</a></li>
-<li><a href="#_using">4.3. USING</a></li>
-<li><a href="#_on">4.4. ON</a></li>
-</ul>
-</li>
-<li><a href="#_subselect">5. Subselect</a></li>
-<li><a href="#_group_by">6. Group By</a></li>
-<li><a href="#_objektprivilegien">7. Objektprivilegien</a></li>
-<li><a href="#_notes">8. Notes</a></li>
+<li><a href="#_rollenuser">4. Rollen/User</a></li>
+<li><a href="#_system_privilege">5. System privilege</a></li>
+<li><a href="#_fragen">6. Fragen</a></li>
+<li><a href="#_notes">7. Notes</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_manipulation"><a class="anchor" href="#_manipulation"></a>1. Manipulation</h2>
+<h2 id="_constraints"><a class="anchor" href="#_constraints"></a>1. Constraints</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_insert"><a class="anchor" href="#_insert"></a>1.1. INSERT</h3>
-<div class="listingblock">
-<div class="title">version 1</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">dept</span> <span class="p">(</span><span class="n">deptno</span><span class="p">,</span> <span class="n">dname</span><span class="p">)</span>
- <span class="k">VALUES</span> <span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="s1">'MIS'</span><span class="p">);</span></code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">version 2</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">dept</span>
- <span class="k">VALUES</span> <span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="s1">'MIS'</span><span class="p">,</span> <span class="k">NULL</span><span class="p">);</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_update"><a class="anchor" href="#_update"></a>1.2. UPDATE</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">UPDATE</span> <span class="k">table_name</span>
-<span class="k">SET</span> <span class="n">column1</span> <span class="o">=</span> <span class="n">value1</span><span class="p">,</span> <span class="n">column2</span> <span class="o">=</span> <span class="n">value2</span><span class="p">,</span> <span class="p">...</span>
-<span class="k">WHERE</span> <span class="n">condition</span><span class="p">;</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_drop"><a class="anchor" href="#_drop"></a>1.3. DROP</h3>
-<div class="paragraph">
-<p>Löscht die Tabelle</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">DROP</span> <span class="k">TABLE</span> <span class="k">TABLE_NAME</span><span class="p">;</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_delete"><a class="anchor" href="#_delete"></a>1.4. DELETE</h3>
-<div class="paragraph">
-<p>Löscht eine Spalte aus der Tabelle aus.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">DELETE</span> <span class="k">FROM</span> <span class="k">table_name</span> <span class="k">WHERE</span> <span class="n">condition</span><span class="p">;</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_alter_table"><a class="anchor" href="#_alter_table"></a>1.5. ALTER TABLE</h3>
-<div class="paragraph">
-<p>Dient zur bearbeitung von Tabellen.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/image-2022-06-09-15-20-47-917.png" alt="image 2022 06 09 15 20 47 917">
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_truncate"><a class="anchor" href="#_truncate"></a>1.6. Truncate</h3>
-<div class="paragraph">
-<p>Löscht die Daten einer Tabelle, nicht die Tabelle</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">TRUNCATE</span> <span class="k">Table</span> <span class="k">TABLE_NAME</span><span class="p">;</span></code></pre>
-</div>
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p>NULL</p>
+</li>
+<li>
+<p>NOT NULL</p>
+</li>
+<li>
+<p>UNIQUE</p>
+</li>
+<li>
+<p>PRIMARY KEY</p>
+</li>
+<li>
+<p>FOREIGN KEY</p>
+</li>
+<li>
+<p>REFERENCES</p>
+</li>
+<li>
+<p>CHECK</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_select"><a class="anchor" href="#_select"></a>2. SELECT</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">SELECT</span> <span class="p">....</span>
-<span class="k">FROM</span> <span class="p">....</span>
-<span class="p">[</span><span class="k">WHERE</span> <span class="p">....]</span>
-<span class="p">[</span><span class="k">CONNECT</span> <span class="k">BY</span> <span class="p">....]</span>
-<span class="p">[</span><span class="k">GROUP</span> <span class="k">BY</span> <span class="p">....</span>
-<span class="p">[</span><span class="k">HAVING</span> <span class="p">....]]</span>
-<span class="p">[</span><span class="k">ORDER</span> <span class="k">BY</span> <span class="p">....]</span></code></pre>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_statische_funktionen"><a class="anchor" href="#_statische_funktionen"></a>2.1. Statische Funktionen</h3>
-<div class="imageblock">
-<div class="content">
-<img src="images/image-2022-06-08-23-02-21-678.png" alt="image 2022 06 08 23 02 21 678">
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_view"><a class="anchor" href="#_view"></a>3. View</h2>
+<h2 id="_views"><a class="anchor" href="#_views"></a>2. Views</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
@@ -591,188 +510,387 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_join"><a class="anchor" href="#_join"></a>4. JOIN</h2>
+<h2 id="_optimierungen"><a class="anchor" href="#_optimierungen"></a>3. Optimierungen</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_natural_join"><a class="anchor" href="#_natural_join"></a>4.1. Natural JOIN</h3>
-<div class="listingblock">
-<div class="title">version 1</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="n">emp</span><span class="p">.</span><span class="n">ENAME</span><span class="p">,</span><span class="n">dept</span><span class="p">.</span><span class="n">DNAME</span> <span class="k">from</span> <span class="n">emp</span><span class="p">,</span> <span class="n">dept</span>
-<span class="k">where</span> <span class="n">emp</span><span class="p">.</span><span class="n">deptno</span><span class="o">=</span><span class="n">dept</span><span class="p">.</span><span class="n">DEPTNO</span><span class="p">;</span></code></pre>
+<div class="ulist">
+<ul>
+<li>
+<p>SELECT * vermeiden</p>
+</li>
+<li>
+<p>SELECT DISTINCT nicht benutzen</p>
+</li>
+<li>
+<p>Inner Join benutzen statt WHERE</p>
+</li>
+<li>
+<p>HAVING vermeiden, weil man WHERE braucht</p>
+</li>
+<li>
+<p>Indizes benutzen</p>
+</li>
+</ul>
 </div>
-</div>
-<div class="listingblock">
-<div class="title">version 2</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="n">d</span><span class="p">.</span><span class="n">deptno</span><span class="p">,</span><span class="n">e</span><span class="p">.</span><span class="n">ENAME</span><span class="p">,</span><span class="n">d</span><span class="p">.</span><span class="n">DNAME</span> <span class="k">from</span> <span class="n">emp</span> <span class="n">e</span><span class="p">,</span>
-<span class="n">dept</span> <span class="n">d</span> <span class="k">where</span> <span class="n">e</span><span class="p">.</span><span class="n">deptno</span><span class="o">=</span><span class="n">d</span><span class="p">.</span><span class="n">DEPTNO</span><span class="p">;</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_cross_join"><a class="anchor" href="#_cross_join"></a>4.2. Cross JOIN</h3>
-<div class="listingblock">
-<div class="title">version 1</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">dept</span><span class="p">,</span><span class="n">emp</span></code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">version 2</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">emp</span> <span class="k">cross</span> <span class="k">join</span> <span class="n">dept</span><span class="p">;</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_using"><a class="anchor" href="#_using"></a>4.3. USING</h3>
-<div class="listingblock">
-<div class="title">version 1</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="n">emp</span><span class="p">.</span><span class="n">ENAME</span><span class="p">,</span><span class="n">dept</span><span class="p">.</span><span class="n">DNAME</span> <span class="k">from</span> <span class="n">emp</span> <span class="k">Join</span>
-<span class="n">dept</span> <span class="k">using</span> <span class="p">(</span><span class="n">deptno</span><span class="p">);</span></code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">version 2</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="n">emp</span><span class="p">.</span><span class="n">ENAME</span><span class="p">,</span><span class="n">dept</span><span class="p">.</span><span class="n">DNAME</span> <span class="k">from</span> <span class="n">emp</span>
-<span class="k">Join</span> <span class="n">dept</span> <span class="k">using</span> <span class="p">(</span><span class="n">deptno</span><span class="p">,</span><span class="n">deptno</span><span class="p">);</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_on"><a class="anchor" href="#_on"></a>4.4. ON</h3>
-<div class="listingblock">
-<div class="title">version 1</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="n">emp</span><span class="p">.</span><span class="n">ENAME</span><span class="p">,</span><span class="n">dept</span><span class="p">.</span><span class="n">DNAME</span> <span class="k">from</span> <span class="n">emp</span>
-<span class="k">Join</span> <span class="n">dept</span> <span class="k">on</span> <span class="p">(</span><span class="n">dept</span><span class="p">.</span><span class="n">deptno</span><span class="o">=</span><span class="n">emp</span><span class="p">.</span><span class="n">deptno</span><span class="p">);</span></code></pre>
-</div>
+<div class="paragraph">
+<p>Tabellen sollte man mit einem Inner Join und nicht über eine WHERE-Klausel durchführen.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/image-2022-06-08-23-14-11-892.png" alt="image 2022 06 08 23 14 11 892">
+<img src="images/image-2022-06-09-13-30-48-603.png" alt="image 2022 06 09 13 30 48 603">
 </div>
 </div>
+<div class="paragraph">
+<p>Den mit diesem Join wird ein Kartesisches Produkt erzeugt, dies bedeutet, dass jede Spalte
+mit jeder Spalte multipliziert wird.
+Daraus folgt, dass die Datenbank viel mehr arbeiten muss als nötig.
+Um diese unnötige Arbeit zu vermeiden sollte man bei solchen Joins immer einen Inner Join benutzten, da dieser nur die nötigen Zeilen zurückgibt.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_subselect"><a class="anchor" href="#_subselect"></a>5. Subselect</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="title">version 1</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">players</span>
-<span class="k">WHERE</span> <span class="k">EXISTS</span> <span class="p">(</span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">penalties</span> <span class="k">WHERE</span>
-<span class="n">playerno</span><span class="o">=</span><span class="n">players</span><span class="p">.</span><span class="n">playerno</span><span class="p">);</span></code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">version 2</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="n">playerno</span><span class="p">,</span> <span class="n">name</span>
-<span class="k">from</span> <span class="n">players</span> <span class="n">p</span>
-<span class="k">where</span> <span class="k">not</span> <span class="k">exists</span>
-    <span class="p">(</span><span class="k">select</span> <span class="o">*</span>
-    <span class="k">from</span> <span class="n">penalties</span>
-    <span class="k">where</span> <span class="n">playerno</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">playerno</span>
-      <span class="k">and</span> <span class="n">amount</span> <span class="o">&lt;=</span> <span class="mi">50</span><span class="p">)</span>
-<span class="k">and</span> <span class="k">exists</span>
-    <span class="p">(</span><span class="k">select</span> <span class="o">*</span>
-    <span class="k">from</span> <span class="n">penalties</span>
-    <span class="k">where</span> <span class="n">playerno</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">playerno</span><span class="p">);</span></code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_group_by"><a class="anchor" href="#_group_by"></a>6. Group By</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="k">SELECT</span> <span class="n">name</span><span class="p">,</span> <span class="n">initials</span><span class="p">,</span> <span class="k">SUM</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">players</span> <span class="n">pl</span><span class="p">,</span> <span class="n">penalties</span> <span class="n">pe</span>
-<span class="k">WHERE</span> <span class="n">pl</span><span class="p">.</span><span class="n">playerno</span> <span class="o">=</span> <span class="n">pe</span><span class="p">.</span><span class="n">playerno</span> <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">name</span><span class="p">,</span> <span class="n">initials</span></code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_objektprivilegien"><a class="anchor" href="#_objektprivilegien"></a>7. Objektprivilegien</h2>
-<div class="sectionbody">
 <div class="imageblock">
 <div class="content">
-<img src="images/image-2022-06-08-23-09-05-248.png" alt="image 2022 06 08 23 09 05 248">
+<img src="images/image-2022-06-09-13-32-43-757.png" alt="image 2022 06 09 13 32 43 757">
+</div>
+</div>
+<div class="sect2">
+<h3 id="_index"><a class="anchor" href="#_index"></a>3.1. Index</h3>
+<div class="paragraph">
+<p>Ein Datenbankindex, oder kurz Index, ist eine von der Datenstruktur getrennte Indexstruktur in einer Datenbank, die die Suche und das Sortieren nach bestimmten Feldern beschleunigt.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_oracle_optimizer"><a class="anchor" href="#_oracle_optimizer"></a>3.2. Oracle-Optimizer</h3>
+<div class="paragraph">
+<p>Der Oracle Query Optimizer ist ein integriertes Datenbank-Tool, dass bei der Optimierung
+von SQL-Abfragen in Oracle Datenbanken hilft, in dem es die effizienteste Methode
+herausfindet eine Abfrage durchzuführen.</p>
+</div>
+<div class="paragraph">
+<p>Es werden mehrere Ausführungspläne sowie die Kosten einzelner Abfragen generiert und
+verglichen. Zum Vergleich werden Query Blocks verwendete, diese sind eine geparste
+Darstellung einer SQL-Abfrage.</p>
+</div>
+<div class="paragraph">
+<p>Der Oracle-Optimizer geht nach folgendem Schema vor:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Es werden Ausführungspläne für ein SQL-Statement generiert</p>
+</li>
+<li>
+<p>Die Kosten dieser Ausführungspläne werden aufgrund von Statistiken zur Datengröße und Speicher-Charakteristiken der Tabellen und Indizes berechnet.</p>
+</li>
+<li>
+<p>Zuletzt werden diese Kosten verglichen und es wird der Plan mit den geringsten Kosten ausgeführt.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Wenn man eine Abfrage hat, die alle Manager einer Firma zurückgeben soll, hat der Oracle
+Optimizer in diesem Beispiel zwei Möglichkeiten: den Index zu benutzen oder einen vollen
+Scan der Tabelle vorzunehmen und jede Zeile einzeln zu überprüfen.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-13-35-59-714.png" alt="image 2022 06 09 13 35 59 714">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_regelbasierter_optimierer"><a class="anchor" href="#_regelbasierter_optimierer"></a>3.3. Regelbasierter Optimierer</h3>
+<div class="paragraph">
+<p>Oracle rät stark von der Nutzung des regelbasierten Optimierer ab, da er überholt ist und in zukünftigen Release entfernt wird.
+Der Regelbasierte Optimierer benutzt verschiedene vordefinierte Regel, um eine Abfrage zu optimieren.
+Eine solche Regel, wäre zum Beispiel: Ist ein Index auf eine Tabelle vorhanden so nimmt der Regelbasierte Optimierer immer den Index, auch wenn ein kompletter Scan der Tabelle effizienter wäre.</p>
+</div>
+<div class="paragraph">
+<p><strong>Wurde von Kostenbasierten Optimierer ersetzt</strong></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_kostenbasierter_optimierer"><a class="anchor" href="#_kostenbasierter_optimierer"></a>3.4. Kostenbasierter Optimierer</h3>
+<div class="paragraph">
+<p>Wenn eine Abfrage an die Datenbank gesendet wird, ist es die Aufgabe des SQL-Optimierers, herauszufinden, wie die Abfrage ausgeführt werden soll, und dieser
+Prozess erstellt den Ausführungsplan der Abfrage.</p>
+</div>
+<div class="paragraph">
+<p>Ein Execution Plan ist wie ein Baum aufgebaut, ein SELECT Statement is die Wurzel, die Tabellen sind die Blätter und dazwischen können viele verschiedene Operationen sein.
+Es gibt drei verschiedene Arten von Operationen:</p>
+</div>
+<div class="paragraph">
+<p><strong>Besteht aus Query Transformer, Estimator und Plan Generator</strong></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_execution_plans"><a class="anchor" href="#_execution_plans"></a>3.5. Execution Plans</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Wird vom Optimierer erstellt wenn eine Query an die Datenbank
+geschickt wird</p>
+</li>
+<li>
+<p>Mehrere Operationen</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Single-Child Operationen, Multi-Child Operationen und Joins</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-14-14-57-768.png" alt="image 2022 06 09 14 14 57 768">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_explain_plan"><a class="anchor" href="#_explain_plan"></a>3.6. EXPLAIN PLAN</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Wird verwendet, um den Execution Plan einer Abfrage zu erstellen</p>
+</li>
+<li>
+<p>Speichert den Plan in eine eigene Tabelle</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-14-15-16-224.png" alt="image 2022 06 09 14 15 16 224">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sql_hints"><a class="anchor" href="#_sql_hints"></a>3.7. SQL Hints</h3>
+<div class="paragraph">
+<p>SQL Hints sind dazu da, um den Optimierer beeinflussen zu können.
+Sie werden in Form von Kommentaren geschrieben, bei denen das erste Zeichen ein Plus (+) ist.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-14-16-48-466.png" alt="image 2022 06 09 14 16 48 466">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>merge / no_merge</p>
+</li>
+<li>
+<p>push_pred / no_push_pred</p>
+</li>
+<li>
+<p>unnest / no_unnest</p>
+</li>
+<li>
+<p>push_subq / no_push_subq</p>
+</li>
+<li>
+<p>driving_site</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_notes"><a class="anchor" href="#_notes"></a>8. Notes</h2>
+<h2 id="_rollenuser"><a class="anchor" href="#_rollenuser"></a>4. Rollen/User</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>CREATE USER</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-15-15-45-446.png" alt="image 2022 06 09 15 15 45 446">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Grant: verteilt Rechte an User</p>
+</li>
+<li>
+<p>Revoke: nimmt die Rechte weg</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_system_privilege"><a class="anchor" href="#_system_privilege"></a>5. System privilege</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A system privilege is the right to perform a particular action or to perform an action on any object of a particular type. Objects include tables, views, materialized views, synonyms, indexes, sequences, cache groups, replication schemes and PL/SQL functions, procedures and packages. Only the instance administrator or a user with ADMIN privilege can grant or revoke system privileges</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fragen"><a class="anchor" href="#_fragen"></a>6. Fragen</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Frage:</strong> Es gibt DDL und DCL. Welche gibt es noch?</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> DQL(SQL) und DML gibt es auch noch</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Gibt es noch eine möglichkeit zu löschen?</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Truncate</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Welche Constrains gibt es noch</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>PK</p>
+</li>
+<li>
+<p>FK</p>
+</li>
+<li>
+<p>Not Null</p>
+</li>
+<li>
+<p>Unique</p>
+</li>
+<li>
+<p>Check</p>
+</li>
+<li>
+<p>Default</p>
+</li>
+<li>
+<p>Create Index</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> WO kann man constraints hinschreiben</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Nach dem Attribut (Column Constrains) und Table Constrains bei zusammengesetzte</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Was ist ein zusammengesetzte PK</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> 2 Attribute bilden einen zusammengesetzte PK und werden eindeutig.</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Kann man Datentypen ändern, wenn schon daten drin sind z.B. varchar zu number?</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Nein nicht direkt, weil Daten schon drin sind geht es nicht. Man könnte aber die Spalte Kopieren in eine andere und die alte dann löschen.</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Was macht Truncate</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Löscht die Daten, nicht die Tabelle.</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Womit kann man Truncate vergleichen und was is der Unterschied?</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Delete From, bei Delete From gibt es ein Where. Truncate hat das nicht.</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Gibt es einen Mistkübel in Oracle beim Löschen (Tabelle zurückhollen)</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Ja, Recycle Bin</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Was ist eine View</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Virtuelle Tabelle dient zur Veranschaulichung</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Wie kann man verhindern eine Tabelle zu sehen</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Mit rechten</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Welcher Index bei einer Tabelle ist Standart</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> ID</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Wofür wird Index verwendet</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Es ist viel schneller.</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Was macht Revoke?</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Gegenteil von Grant</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Wie kann man die Rechte weitergeben?</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> &#8230;&#8203; with option</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Was macht checkt Constraints</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Mann kann sagen das z.B. der User nicht älter als 18 sein darf. Also überprüfung in der DB.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_notes"><a class="anchor" href="#_notes"></a>7. Notes</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre>systemvariablen
-- select sysdate from dual
-- select user from dual
-- select rownum, name from players
+<pre>- was ist ein index
+Ein Datenbankindex, oder kurz Index, ist eine von der Datenstruktur getrennte Indexstruktur in einer Datenbank, die die Suche und das Sortieren nach bestimmten Feldern beschleunigt
 
-nummerische ausdrücke
-- select 3+4*2 from dual =&gt; ERgebniss: 1 zeile: 11, weil dual nur 1 zeile hat
-- select 3+4*2 from players (players hat 5 einträge) =&gt; 1.-5. zeile 11
+- welche automatischen indezes gibt es
+primary key
 
-Alphanummerische Ausdrücke
-- || =&gt; concatinieren
-- concat() is ds gleiche
+- Was ist distinct
+doppellete werte werden rausgefiltert
 
-Scalarfunktionen
-- Length
-- Decode
+- kostenbasierter optimierer, was bedeutet kosten
+zeit, resourcen, mischung aus mehreren parameter
 
-Date
-- Alter NLS_Format ....
-- TO_DATE für eingabe
-- TO_CHAR für ausgabe
+- explain plan keyword -&gt; erstellt execution plan für ein select statement
 
-Klauseln
-- WHERE =&gt; bezieht sich auf alle zeilen
-- LIKE Wildcards:
-- % =&gt; alle darauffolgenden zeichen
-- _ =&gt; einzelnes zeichen
-- BSP: WHERE name LIKE 'a%'
-- GROUP BY =&gt; HAVING bezieht sich auf die gruppen/gruppierung
-- ORDER BY =&gt; ASC, DESC
+- was ist ein hint?
+mit einem hint übersteuert man die sql optimierer
 
-Gruppenfunktion:
-- SUM
-- MIN
-- MAX
-- AVG
-- COUNT
+- sql hint -&gt; beginnt mit /*+ .... */
 
-Constraints
-- not null
-- unique
-- PK
-- FK
-- check
-- default
-- create_index
+- was erkennt man an einem hint?
+dass jemand in einen optimierer ein eingreift
 
-Rechte
-- grant
-
-Subquery:
-- IN
-- ALL
-- ANY
-- EXISTS
-
-JOINS:
-- emp,dept join =&gt; kartesisches produkt
-- über PK und FK wird gejoint</pre>
+- wie optimiert man sql statement
+hints, reihenfolger der joins, indezes, kein distinct</pre>
 </div>
 </div>
 </div>
