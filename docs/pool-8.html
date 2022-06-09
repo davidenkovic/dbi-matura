@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
 <link rel="icon" type="image/png" href="themes/favicon.png">
-<title>DBI Matura</title>
+<title>Die "Multiuser-Eigenschaft" von Datenbanken und Concurrency</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -440,61 +440,376 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>DBI Matura</h1>
+<h1>Die "Multiuser-Eigenschaft" von Datenbanken und Concurrency</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_themen">1. Themen</a></li>
-<li><a href="#_referat_fragen">2. Referat Fragen</a></li>
+<li><a href="#_einleitung">1. Einleitung</a></li>
+<li><a href="#_acid">2. ACID</a></li>
+<li><a href="#_locks">3. Locks</a>
+<ul class="sectlevel2">
+<li><a href="#_problem_lost_update">3.1. Problem „Lost Update“</a></li>
+<li><a href="#_problem_uncommitted_dependency">3.2. Problem “Uncommitted Dependency”</a></li>
+</ul>
+</li>
+<li><a href="#_dirty_read">4. Dirty Read</a></li>
+<li><a href="#_dirty_write">5. Dirty Write</a></li>
+<li><a href="#_sperren">6. Sperren</a></li>
+<li><a href="#_two_phase_locking">7. Two Phase Locking</a>
+<ul class="sectlevel2">
+<li><a href="#_spezialfälle_von_2pl">7.1. Spezialfälle von 2PL</a></li>
+<li><a href="#_timeout">7.2. Timeout</a></li>
+</ul>
+</li>
+<li><a href="#_fragen">8. Fragen</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_themen"><a class="anchor" href="#_themen"></a>1. Themen</h2>
+<h2 id="_einleitung"><a class="anchor" href="#_einleitung"></a>1. Einleitung</h2>
 <div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="https://davidenkovic.github.io/dbi-matura/pool-1.html">Grundlagen der Datenbanktechnologien</a></p>
-</li>
-<li>
-<p><a href="https://davidenkovic.github.io/dbi-matura/pool-2.html">Konzeptionelles Modell</a></p>
-</li>
-<li>
-<p><a href="https://davidenkovic.github.io/dbi-matura/pool-3.html">SQL Data Retrieval und DML</a></p>
-</li>
-<li>
-<p><a href="https://davidenkovic.github.io/dbi-matura/pool-4.html">SQL DCL und DDL</a></p>
-</li>
-<li>
-<p>Datenbankadministration und internes Modell</p>
-</li>
-<li>
-<p><a href="https://davidenkovic.github.io/dbi-matura/pool-6/.html">Semistrukturierte Daten und prozedurale Erweiterung</a></p>
-</li>
-<li>
-<p>Spezielle DB Themen</p>
-</li>
-<li>
-<p><a href="https://davidenkovic.github.io/dbi-matura/pool-8/.html">Die "Multiuser-Eigenschaft" von Datenbanken und Concurrency</a></p>
-</li>
-</ol>
+<div class="paragraph">
+<p>Probleme mit der Concurrency (engl. Gleichzeitigkeit) in Datenbanksystemen treten immer dann auf, wenn „gleichzeitig“ mehrere Benutzer oder Prozesse auf die Datenbank zugreifen können.</p>
+</div>
+<div class="paragraph">
+<p>Wird dabei auf die gleichen Daten-Items zugegriffen, so muss dies vom Datenbankmanagementsystem (DBMS) kontrolliert werden.</p>
+</div>
+<div class="paragraph">
+<p>Fehlt ein geeigneter Kontrollmechanismus, so können inkonsistente Zustände in Datenbanksystemen auftreten.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_referat_fragen"><a class="anchor" href="#_referat_fragen"></a>2. Referat Fragen</h2>
+<h2 id="_acid"><a class="anchor" href="#_acid"></a>2. ACID</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Atomicity:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Entweder werden alle oder keine Werteänderungen einer Transaktion in den Datenbankzustand übernommen</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Consistency:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Eine Transaktion überführt einen konsistenten Zustand (FDs, Integritätsvedingungen) in einen anderen</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Isolation:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Eine Transaktion berücksichtigt bei der Berechnung keine Effekte andere parallel laufender Transaktionen</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Durability:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Effekte einer erfolgreichen Transaktion werden persistent gemacht</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_locks"><a class="anchor" href="#_locks"></a>3. Locks</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://davidenkovic.github.io/dbi-matura/dbi-fragen.html">DBI Referat Fragen</a></p>
+<p>Die meisten DBMS sind Multiuser-Systeme, was bedeutet, dass es erlaubt ist, dass mehrere Transaktionen zur selben Zeit an der gleichen Datenbank ablaufen.</p>
+</div>
+<div class="paragraph">
+<p>In solchen Systemen wird ein Concurrency Kontrollmechanismus benötigt, damit sich zeitlich parallel ablaufende Transaktionen gegenseitig nicht beeinträchtigen.</p>
+</div>
+<div class="paragraph">
+<p>Ohne einen solchen Mechanismus können verschiedene Probleme auftreten. Diese typischen Probleme wollen wir nun betrachten:</p>
+</div>
+<div class="sect2">
+<h3 id="_problem_lost_update"><a class="anchor" href="#_problem_lost_update"></a>3.1. Problem „Lost Update“</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-21-13-13-095.png" alt="image 2022 06 09 21 13 13 095">
+</div>
+</div>
+<div class="paragraph">
+<p>Eine Transaktion A holt einen Datensatz R zur Zeit t1. Transaktion B holt den gleichen Datensatz zu einem späteren Zeitpunkt t2.</p>
+</div>
+<div class="paragraph">
+<p>Die Transaktion A schreibt den veränderten Datensatz zur Zeit t3 zurück und die Transaktion B schreibt den gleichen Datensatz gemäß den getätigten Veränderungen basierend auf den Werten, die zum Zeitpunkt t2 gültig waren, zum Zeitpunkt t4 zurück. Damit ist das Update der Transaktion A verlorengegangen.</p>
+</div>
+<div class="paragraph">
+<p>Obwohl der Preis von ATS 100,- einmal um 10% und einmal um 20% erhöht werden sollte, was zu einem Preis von ATS 132,- führt, steht in der Datenbank ein Preis von 120,-; die Veränderung der Transaktion A ist verloren gegangen!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_problem_uncommitted_dependency"><a class="anchor" href="#_problem_uncommitted_dependency"></a>3.2. Problem “Uncommitted Dependency”</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/con1.PNG" alt="con1">
+</div>
+</div>
+<div class="paragraph">
+<p>Dieses Problem tritt auf, weil die Transaktion B den Wert / Datensatz / Tabelle verwendet (select, update), der von der anderen Transaktion A zwar verändert, aber nicht committed wurde. Ein derartiges <strong>„dirty read“</strong> (= lesen, vor der Änderungsbestätigung) kann verhindert werden, in dem „uncommited updates“ vor anderen Transaktionen verborgen werden.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dirty_read"><a class="anchor" href="#_dirty_read"></a>4. Dirty Read</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Daten welche in einer noch nicht geschlossenen Datenbank liegen werden gelesen</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dirty_write"><a class="anchor" href="#_dirty_write"></a>5. Dirty Write</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Wenn zwei Transaktionen sich "vermischen" (Daten von mehreren Transaktionen sich kreuzen)</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sperren"><a class="anchor" href="#_sperren"></a>6. Sperren</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Sperren werden in Datenbanksystemen eingesetzt, um die Forderung der Isolation des ACID-Prinzips bei Transaktionen zu erfüllen</p>
+</li>
+<li>
+<p>Alle Sperrverfahren fallen in die Kategorie der pessimistischen Synchronisationsverfahren</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_two_phase_locking"><a class="anchor" href="#_two_phase_locking"></a>7. Two Phase Locking</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Das 2PL-Verfahren geht davon aus, dass jede Transaktion zwei Phasen durchläuft:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Die Wachstumsphase, in welcher Sperren nur gesetzt, aber nicht freigegeben werden dürfen.</p>
+</li>
+<li>
+<p>Die Schrumpfungsphase, in welcher Sperren nur freigegeben, aber nicht angefordert werden dürfen.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/con4.PNG" alt="con4">
+</div>
+</div>
+<div class="sect2">
+<h3 id="_spezialfälle_von_2pl"><a class="anchor" href="#_spezialfälle_von_2pl"></a>7.1. Spezialfälle von 2PL</h3>
+<div class="sect3">
+<h4 id="_konservative_2pl_preclaiming"><a class="anchor" href="#_konservative_2pl_preclaiming"></a>7.1.1. Konservative 2PL (Preclaiming)</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Hier werden bei Beginn der Transaktion alle benötigten Sperren auf einmal gesetzt</p>
+</li>
+<li>
+<p>Verhindert Deadlocks</p>
+</li>
+<li>
+<p>Hoher Verlust an Parallelität, da Transaktion erst beginnen kann, wenn sie alle Sperren erhalten hat</p>
+</li>
+<li>
+<p>Es kann bei dieser Variante bereits vor Ende der Transaktion mit der Freigabe gesperrter Objekte begonnen werden.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/con2.PNG" alt="con2">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_strikte_2pl"><a class="anchor" href="#_strikte_2pl"></a>7.1.2. Strikte 2PL</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Hier werden</p>
+</li>
+<li>
+<p>verhindert das kaskadierende Zurücksetzen von sich gegenseitig beeinflussenden Transaktionen</p>
+</li>
+<li>
+<p>Nachteil ist, dass Sperren häufig viel länger gehalten werden als nötig und sich somit die Wartezeit von blockierten Transaktionen verlängert</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/con3.PNG" alt="con3">
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_timeout"><a class="anchor" href="#_timeout"></a>7.2. Timeout</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Einfach und Billig</p>
+</li>
+<li>
+<p>Wird für Deadlock-behandlung verwendet</p>
+</li>
+<li>
+<p>Wenn Transaktion ein Zeitlimit überschreiten wird ein Rollback durchgeführt</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Problem: Bestimmen des Timeout Grenzwertes schwierig</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Zu hoher Wert: unnötige Wartezeit</p>
+</li>
+<li>
+<p>Zu kleiner Wert: unnötige Rollbacks</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Wichtige Faktoren bei der Wahl des Wertes</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Lastzusammensetzung</p>
+</li>
+<li>
+<p>Konfliktwahrscheinlichkeit</p>
+</li>
+<li>
+<p>Verfügbarkeit und Auslastung der Rechner</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fragen"><a class="anchor" href="#_fragen"></a>8. Fragen</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Referat: Concurrency</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Consistency:</strong></p>
+</div>
+<div class="paragraph">
+<p>Es hat nie einen Zustand, der nicht ungleich ist.</p>
+</div>
+<div class="paragraph">
+<p>Keine zwei Tumfarts in einer Tabelle.</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Welches gegenstück gibt es zu ACID bei anderen Datenbanken?</p>
+</div>
+<div class="paragraph">
+<p>NoSQL gibt es kein ACID.</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> CAP-Theorem</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Wie schreibt man ein beginn und ende bei einer Transaction?</p>
+</div>
+<div class="paragraph">
+<p><strong>Begin:</strong> Gibts keinen | Ist der letzte Commit<br>
+<strong>Ende:</strong> Commit</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Wie aborted man?</p>
+</div>
+<div class="paragraph">
+<p><strong>Keine Antwort bekommen</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Was sind R Sperren (Wird wrsl nicht gefragt)</p>
+</div>
+<div class="paragraph">
+<p><strong>R</strong> Sperren sind <code>Read Sperren</code><br>
+<strong>RX</strong> sind Read und <code>Write Sperren</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Welche Sperren kann man in Oracle stellen? (?)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Lock Escalation</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Wie kann man Probleme lösen</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Isolation-ebenen</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Was kann aber doch noch Passieren</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Deadlock</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Kann bei der Oracle DB einen Deadlock erstellen</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Ja</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Wie löst Oracle einen Deadlock</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> Wir selber müssen nichts machen, wird mit timeouts gelöst.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-09 20:39:22 UTC
+Last updated 2022-06-09 20:38:25 UTC
 </div>
 </div>
 </body>

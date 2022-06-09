@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
 <link rel="icon" type="image/png" href="themes/favicon.png">
-<title>DBI Matura</title>
+<title>Spezielle DB Themen</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -440,61 +440,197 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>DBI Matura</h1>
+<h1>Spezielle DB Themen</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_themen">1. Themen</a></li>
-<li><a href="#_referat_fragen">2. Referat Fragen</a></li>
+<li><a href="#_begriffe">1. Begriffe</a></li>
+<li><a href="#_preprocessing">2. Preprocessing</a>
+<ul class="sectlevel2">
+<li><a href="#_dealing_with_missing_values">2.1. Dealing with missing values</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_themen"><a class="anchor" href="#_themen"></a>1. Themen</h2>
+<h2 id="_begriffe"><a class="anchor" href="#_begriffe"></a>1. Begriffe</h2>
 <div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
+<div class="ulist">
+<ul>
 <li>
-<p><a href="https://davidenkovic.github.io/dbi-matura/pool-1.html">Grundlagen der Datenbanktechnologien</a></p>
+<p><strong>Baseline:</strong> Basis ML-Modell zum Vergleich mit folgenden Modellen</p>
 </li>
 <li>
-<p><a href="https://davidenkovic.github.io/dbi-matura/pool-2.html">Konzeptionelles Modell</a></p>
+<p><strong>Hyperparameter:</strong> Parameter eines ML-Algorithmus, die nicht durch Ändern der Trainingsdaten angepasst werden</p>
 </li>
 <li>
-<p><a href="https://davidenkovic.github.io/dbi-matura/pool-3.html">SQL Data Retrieval und DML</a></p>
+<p><strong>Imbalance Dataset:</strong> Unausgewogene Datensätze sind solche, bei denen die Klassenverteilung stark verzerrt ist, wie z. B. 1:100 oder 1:1000 Beispiele in der Minderheitsklasse zur Mehrheitsklasse. Diese Verzerrung im Trainingsdatensatz kann viele Algorithmen des maschinellen Lernens beeinflussen, so dass einige die Minderheitenklasse vollständig zu ignorieren</p>
 </li>
 <li>
-<p><a href="https://davidenkovic.github.io/dbi-matura/pool-4.html">SQL DCL und DDL</a></p>
+<p><strong>Random Undersampling:</strong> zufälliges Löschen von Eintragen in der Mehrheitsklasse</p>
 </li>
 <li>
-<p>Datenbankadministration und internes Modell</p>
+<p><strong>Random Oversampling:</strong> zufälliges Duplizieren von Einträgen in der Minderheitsklasse</p>
 </li>
 <li>
-<p><a href="https://davidenkovic.github.io/dbi-matura/pool-6/.html">Semistrukturierte Daten und prozedurale Erweiterung</a></p>
+<p><strong>Overfitting:</strong> Modell orientiert sich zu sehr an den Trainingsdaten</p>
 </li>
 <li>
-<p>Spezielle DB Themen</p>
+<p><strong>Underfitting:</strong> Modell berücksichtigt die Zusammenhänger der Daten nicht ausreichend</p>
 </li>
-<li>
-<p><a href="https://davidenkovic.github.io/dbi-matura/pool-8/.html">Die "Multiuser-Eigenschaft" von Datenbanken und Concurrency</a></p>
-</li>
-</ol>
+</ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_referat_fragen"><a class="anchor" href="#_referat_fragen"></a>2. Referat Fragen</h2>
+<h2 id="_preprocessing"><a class="anchor" href="#_preprocessing"></a>2. Preprocessing</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://davidenkovic.github.io/dbi-matura/dbi-fragen.html">DBI Referat Fragen</a></p>
+<p><strong>Dataframes:</strong> kleine Tabellen</p>
+</div>
+<div class="paragraph">
+<p><strong>Series:</strong> repräsentiert eine Spalte</p>
+</div>
+<div class="sect2">
+<h3 id="_dealing_with_missing_values"><a class="anchor" href="#_dealing_with_missing_values"></a>2.1. Dealing with missing values</h3>
+<div class="paragraph">
+<p>ML-Algorithmen können nicht mit fehlenden Werten umgehen daher muss man die Daten Vorverarbeitung</p>
+</div>
+<div class="paragraph">
+<p><strong>Dropping</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Einfachste Methode, aber möglicher Verlust von wichtigen Daten</p>
+</li>
+<li>
+<p>Kommt auf das dataset drauf, ob das Löschen der Zeile sinnvoll ist</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Sinnvoll: wenn nur einige wenige Zeilen betroffen sind</p>
+</li>
+<li>
+<p>vice versa, sinnlos wenn dadurch eine Großzahl der Zeilen gelöscht wird</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>In Betracht ziehen on Löschen der Spalte mehr Sinn ergibt</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Imputing</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Null-Werte durch generierte Werte ersetzen</p>
+</li>
+<li>
+<p>Methoden: Durschnitt, Median, am öftesten vorkommend</p>
+</li>
+<li>
+<p>Mit scikit-learn Bibliothek SimpleImputer verwenden</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Imputing with Flag</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Wenn die ersetzenden Werte zu ungenau sind</p>
+</li>
+<li>
+<p>Man teilt dem Algorithmus mit, welche Werte von Anfang an gefehlt haben</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Man hängt dem Spaltennamen „was_missing“ an</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Categorical Variables</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Kategoriale Daten sind Daten, die dazu dienen, Informationen mit ähnlichen Merkmalen zu gruppieren</p>
+</li>
+<li>
+<p>Fehlende kategorische Daten können mithilfe von Imputing-Methoden wir most-frequent und constant ersetzt werden</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Encoding Categorical Variables</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Da die meisten ML-Algorithmen nichts mit kategorischen Daten anfangen können, müssen diese in numerische umgewandelt („encoding“) werden</p>
+</li>
+<li>
+<p>Ordinale Daten: Kategorien mit natürlicher Ordnung (Schulnoten)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Ordinal Encoding: mit scikit-learn OrdinalEncoder</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Nominale Daten: Daten ohne quantitativen Wert (Haarfarbe, Augenfarbe)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>One-Hot Encoding: da Nominale Daten keine Ordnung haben wäre es irreführend, wenn man ihnen durch Ordinal Encoding einen Rang geben würde</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Durch binarisieren (von Kategorie Farbe zu isRed, isGreen, etc.)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Scaling</strong></p>
+</div>
+<div class="paragraph">
+<p>Bei Verwendung von distanzbasierten Algorithmen, spielt die Skalierung und Proportionalität der Features eine große Rolle.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Min-max-normalisation: bringt die Daten in einen Bereich zwischen 0 und 1 (Ausreißer haben noch Einfluss)</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ki1.PNG" alt="ki1">
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-09 20:39:22 UTC
+Last updated 2022-06-09 20:38:25 UTC
 </div>
 </div>
 </body>
