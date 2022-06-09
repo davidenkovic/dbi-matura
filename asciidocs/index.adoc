@@ -7,7 +7,7 @@
 3. link:https://davidenkovic.github.io/dbi-matura/pool-3.html[SQL Data Retrieval und DML]
 4. link:https://davidenkovic.github.io/dbi-matura/pool-4.html[SQL DCL und DDL]
 5. Datenbankadministration und internes Modell
-6. Semistrukturierte Daten und prozedurale Erweiterung
+6. link:https://davidenkovic.github.io/dbi-matura/pool-4.html[Semistrukturierte Daten und prozedurale Erweiterung]
 7. Spezielle DB Themen
 8. Die "Multiuser-Eigenschaft" von Datenbanken und Concurrency
 
