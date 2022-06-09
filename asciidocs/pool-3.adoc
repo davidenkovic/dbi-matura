@@ -27,11 +27,37 @@ SET column1 = value1, column2 = value2, ...
 WHERE condition;
 ----
 
+=== DROP
+
+Löscht die Tabelle
+
+[source,sql]
+----
+DROP TABLE TABLE_NAME;
+----
+
 === DELETE
+
+Löscht eine Spalte aus der Tabelle aus.
 
 [source,sql]
 ----
 DELETE FROM table_name WHERE condition;
+----
+
+=== ALTER TABLE
+
+Dient zur bearbeitung von Tabellen.
+
+image::images/image-2022-06-09-15-20-47-917.png[]
+
+=== Truncate
+
+Löscht die Daten einer Tabelle, nicht die Tabelle
+
+[source,sql]
+----
+TRUNCATE Table TABLE_NAME;
 ----
 
 == SELECT
@@ -160,3 +186,68 @@ WHERE pl.playerno = pe.playerno GROUP BY name, initials
 == Objektprivilegien
 
 image::images/image-2022-06-08-23-09-05-248.png[]
+
+== Notes
+
+
+----
+systemvariablen
+- select sysdate from dual
+- select user from dual
+- select rownum, name from players
+
+nummerische ausdrücke
+- select 3+4*2 from dual => ERgebniss: 1 zeile: 11, weil dual nur 1 zeile hat
+- select 3+4*2 from players (players hat 5 einträge) => 1.-5. zeile 11
+
+Alphanummerische Ausdrücke
+- || => concatinieren
+- concat() is ds gleiche
+
+Scalarfunktionen
+- Length
+- Decode
+
+Date
+- Alter NLS_Format ....
+- TO_DATE für eingabe
+- TO_CHAR für ausgabe
+
+Klauseln
+- WHERE => bezieht sich auf alle zeilen
+- LIKE Wildcards:
+- % => alle darauffolgenden zeichen
+- _ => einzelnes zeichen
+- BSP: WHERE name LIKE 'a%'
+- GROUP BY => HAVING bezieht sich auf die gruppen/gruppierung
+- ORDER BY => ASC, DESC
+
+Gruppenfunktion:
+- SUM
+- MIN
+- MAX
+- AVG
+- COUNT
+
+Constraints
+- not null
+- unique
+- PK
+- FK
+- check
+- default
+- create_index
+
+Rechte
+- grant
+
+Subquery:
+- IN
+- ALL
+- ANY
+- EXISTS
+
+JOINS:
+- emp,dept join => kartesisches produkt
+- über PK und FK wird gejoint
+----

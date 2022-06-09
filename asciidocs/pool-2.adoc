@@ -28,6 +28,14 @@ In der Spezialisierung teilen wir eine Entität auf, um mehrere Entitäten niedr
 
 link:https://davidenkovic.github.io/dbi-matura/pool-1.html[Grundlagen der Datenbanktechnologien]
 
+* NULL
+* NOT NULL
+* UNIQUE
+* PRIMARY KEY
+* FOREIGN KEY
+* REFERENCES
+* CHECK
+
 
 == Kardinalitäten
 
