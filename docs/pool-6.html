@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<link rel="icon" type="image/png" href="themes/favicon.png">
+<title>Semistrukturierte Daten und prozedurale Erweiterung</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment @import statement to use as custom stylesheet */
+/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";*/
+article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+abbr[title]{border-bottom:1px dotted}
+b,strong{font-weight:bold}
+dfn{font-style:italic}
+hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,*::before,*::after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto;tab-size:4;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0;direction:ltr}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{font-family:inherit;font-weight:400;font-size:1em;line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em;height:0}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{font-size:1em;line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0;font-size:1em}
+ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
+ul.square{list-style-type:square}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+abbr,acronym{text-transform:uppercase;font-size:90%;color:rgba(0,0,0,.8);border-bottom:1px dotted #ddd;cursor:help}
+abbr{text-transform:none}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote cite{display:block;font-size:.9375em;color:rgba(0,0,0,.6)}
+blockquote cite::before{content:"\2014 \0020"}
+blockquote cite a,blockquote cite a:visited{color:rgba(0,0,0,.6)}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{display:table-cell;line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed;word-wrap:break-word}
+:not(pre)>code.nobreak{word-wrap:normal}
+:not(pre)>code.nowrap{white-space:nowrap}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre>code{display:block}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;-webkit-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em white inset;box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em #fff inset;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin-left:auto;margin-right:auto;margin-top:0;margin-bottom:0;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:100%;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:rgba(255,255,255,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details>summary:first-of-type{cursor:pointer;display:list-item;outline:none;margin-bottom:.75em}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+table.tableblock #preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:inherit}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6)}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border-style:solid;border-width:1px;border-color:#e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;-webkit-border-radius:4px;border-radius:4px}
+.exampleblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child{margin-bottom:0}
+.sidebarblock{border-style:solid;border-width:1px;border-color:#dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;-webkit-border-radius:4px;border-radius:4px}
+.sidebarblock>:first-child{margin-top:0}
+.sidebarblock>:last-child{margin-bottom:0}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{-webkit-border-radius:4px;border-radius:4px;word-wrap:break-word;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class="highlight"],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;-webkit-border-radius:4px;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos{border-right:1px solid currentColor;opacity:.35;padding-right:.5em}
+pre.pygments .lineno{border-right:1px solid currentColor;opacity:.35;display:inline-block;margin-right:.75em}
+pre.pygments .lineno::before{content:"";margin-right:-.125em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;text-align:left;margin-right:0}
+table.tableblock{max-width:100%;border-collapse:separate}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+td.tableblock>.content>:last-child.sidebarblock{margin-bottom:0}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>thead>tr>.tableblock,table.grid-all>tbody>tr>.tableblock{border-width:0 1px 1px 0}
+table.grid-all>tfoot>tr>.tableblock{border-width:1px 1px 0 0}
+table.grid-cols>*>tr>.tableblock{border-width:0 1px 0 0}
+table.grid-rows>thead>tr>.tableblock,table.grid-rows>tbody>tr>.tableblock{border-width:0 0 1px}
+table.grid-rows>tfoot>tr>.tableblock{border-width:1px 0 0}
+table.grid-all>*>tr>.tableblock:last-child,table.grid-cols>*>tr>.tableblock:last-child{border-right-width:0}
+table.grid-all>tbody>tr:last-child>.tableblock,table.grid-all>thead:last-child>tr>.tableblock,table.grid-rows>tbody>tr:last-child>.tableblock,table.grid-rows>thead:last-child>tr>.tableblock{border-bottom-width:0}
+table.frame-all{border-width:1px}
+table.frame-sides{border-width:0 1px}
+table.frame-topbot,table.frame-ends{border-width:1px 0}
+table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{display:table-cell;line-height:1.6;background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+ul.checklist{margin-left:.625em}
+ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist li>p:first-child>input[type="checkbox"]:first-child{margin-right:.25em}
+ul.inline{display:-ms-flexbox;display:-webkit-box;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:solid 4px #fff;-webkit-box-shadow:0 0 0 1px #ddd;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
+.gist .file-data>table td.line-data{width:99%}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);-webkit-border-radius:100px;border-radius:100px;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,span.alt{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;-webkit-box-shadow:0 1px 4px #e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media print,amzn-kf8{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1>Semistrukturierte Daten und prozedurale Erweiterung</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_xml">1. XML</a>
+<ul class="sectlevel2">
+<li><a href="#_dtd">1.1. DTD</a></li>
+<li><a href="#_dtd_für_entity">1.2. DTD für Entity</a></li>
+<li><a href="#_xml_schema">1.3. XML Schema</a></li>
+<li><a href="#_svg_scalable_vector_graphics">1.4. SVG (Scalable Vector Graphics)</a></li>
+<li><a href="#_ajax_asynchronous_javascript_and_xml">1.5. AJAX - Asynchronous JavaScript And XML</a></li>
+<li><a href="#_dom_document_object_model">1.6. DOM – Document Object Model</a></li>
+<li><a href="#_sax_simple_api_for_xml">1.7. SAX – Simple API for XML</a></li>
+</ul>
+</li>
+<li><a href="#_pl_sql">2. PL-SQL</a>
+<ul class="sectlevel2">
+<li><a href="#_prozedur">2.1. Prozedur</a></li>
+<li><a href="#_funktion">2.2. Funktion</a></li>
+<li><a href="#_package">2.3. Package</a></li>
+<li><a href="#_ausführung_einer_stored_procedure_function">2.4. Ausführung einer Stored Procedure/ Function</a></li>
+<li><a href="#_exceptions">2.5. Exceptions</a></li>
+<li><a href="#_trigger">2.6. Trigger</a></li>
+<li><a href="#_jobs">2.7. Jobs</a></li>
+</ul>
+</li>
+<li><a href="#_jpa">3. JPA</a></li>
+<li><a href="#_r">4. R</a></li>
+<li><a href="#_apex">5. Apex</a>
+<ul class="sectlevel2">
+<li><a href="#_3_stufen_architektur">5.1. 3-Stufen Architektur*</a></li>
+<li><a href="#_ablauf">5.2. Ablauf</a></li>
+<li><a href="#_data_schemas">5.3. Data Schemas</a></li>
+<li><a href="#_oracle_apex_engine">5.4. Oracle Apex Engine</a></li>
+<li><a href="#_application">5.5. Application</a></li>
+<li><a href="#_pages">5.6. Pages</a></li>
+<li><a href="#_region">5.7. Region</a></li>
+<li><a href="#_region_tree">5.8. Region - Tree</a></li>
+<li><a href="#_tree">5.9. Tree</a></li>
+</ul>
+</li>
+<li><a href="#_notes">6. Notes</a></li>
+<li><a href="#_fragen">7. Fragen</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_xml"><a class="anchor" href="#_xml"></a>1. XML</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>e <strong>X</strong> tensible <strong>M</strong> arkup <strong>L</strong> anguage</p>
+</li>
+<li>
+<p>Texbasiertes Datenformat ähnlich wie JSON</p>
+</li>
+<li>
+<p>Enstand aus der Not da HTML an seine grenzen stoßte</p>
+</li>
+<li>
+<p>Häufig zum Datenaustausch über das Internet</p>
+</li>
+<li>
+<p>Ist designed um Daten beförden nicht um sie zu veranschaulichen</p>
+</li>
+<li>
+<p>Verwendet keine vordefinierten Tags wie &lt;p&gt;, &lt;h1&gt;, etc.</p>
+</li>
+<li>
+<p>Der Autor muss die Struktur und tags definieren</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;player&gt;</span>
+    <span class="nt">&lt;name&gt;</span>Dave<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;age&gt;</span>18<span class="nt">&lt;/age&gt;</span>
+<span class="nt">&lt;/player&gt;</span></code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dtd"><a class="anchor" href="#_dtd"></a>1.1. DTD</h3>
+<div class="paragraph">
+<p>Definiert die Struktur und die Elemente und Attribute eines XML-Dokuments</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="dtd">&lt;!DOCTYPE note
+[
+&lt;!ELEMENT note (to,from,heading,body)&gt;
+&lt;!ELEMENT to (#PCDATA)&gt;
+&lt;!ELEMENT from (#PCDATA)&gt;
+&lt;!ELEMENT heading (#PCDATA)&gt;
+&lt;!ELEMENT body (#PCDATA)&gt;
+]&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dtd_für_entity"><a class="anchor" href="#_dtd_für_entity"></a>1.2. DTD für Entity</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="dtd">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+&lt;!DOCTYPE note [
+&lt;!ENTITY nbsp "&amp;#xA0;"&gt;
+&lt;!ENTITY writer "Writer: Donald Duck."&gt;
+&lt;!ENTITY copyright "Copyright: W3Schools."&gt;
+]&gt;
+
+&lt;note&gt;
+&lt;to&gt;Tove&lt;/to&gt;
+&lt;from&gt;Jani&lt;/from&gt;
+&lt;heading&gt;Reminder&lt;/heading&gt;
+&lt;body&gt;Don't forget me this weekend!&lt;/body&gt;
+&lt;footer&gt;&amp;writer;&amp;nbsp;&amp;copyright;&lt;/footer&gt;
+&lt;/note&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_xml_schema"><a class="anchor" href="#_xml_schema"></a>1.3. XML Schema</h3>
+<div class="paragraph">
+<p>Alternative zu DTD mit einigen Vorteilen:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>In XML geschrieben</p>
+</li>
+<li>
+<p>Unterstützt Datentypen</p>
+</li>
+<li>
+<p>Unterstützt XML Namespaces</p>
+</li>
+<li>
+<p>Erweiterbar</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">"note"</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;xs:complexType&gt;</span>
+  <span class="nt">&lt;xs:sequence&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">"to"</span> <span class="na">type=</span><span class="s">"xs:string"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">"from"</span> <span class="na">type=</span><span class="s">"xs:string"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">"heading"</span> <span class="na">type=</span><span class="s">"xs:string"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">"body"</span> <span class="na">type=</span><span class="s">"xs:string"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/xs:sequence&gt;</span>
+<span class="nt">&lt;/xs:complexType&gt;</span>
+
+<span class="nt">&lt;/xs:element&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_svg_scalable_vector_graphics"><a class="anchor" href="#_svg_scalable_vector_graphics"></a>1.4. SVG (Scalable Vector Graphics)</h3>
+<div class="paragraph">
+<p>Ist eine XML-basierte Markup Language zu beschreibung von 2 Dimensionalen Vektor Grafiken</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;svg</span> <span class="na">width=</span><span class="s">"300"</span> <span class="na">height=</span><span class="s">"200"</span> <span class="na">viewbox=</span><span class="s">"0 0 3 2"</span><span class="nt">&gt;</span>
+ ...
+<span class="nt">&lt;/svg&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ajax_asynchronous_javascript_and_xml"><a class="anchor" href="#_ajax_asynchronous_javascript_and_xml"></a>1.5. AJAX - Asynchronous JavaScript And XML</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Update eine web page ohne sie neu zu laden</p>
+</li>
+<li>
+<p>Daten von einem Server anfordern - nachdem die Seite geladen wurde</p>
+</li>
+<li>
+<p>Empfangen von Daten von einem Server - nachdem die Seite geladen wurde</p>
+</li>
+<li>
+<p>Daten an einen Server senden - im Hintergrund</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-16-41-58-467.png" alt="image 2022 06 09 16 41 58 467">
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"demo"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;h1&gt;</span>The XMLHttpRequest Object<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">onclick=</span><span class="s">"loadDoc()"</span><span class="nt">&gt;</span>Change Content<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 <span class="err">&amp;&amp;</span> this.status == 200) {
+      document.getElementById("demo").innerHTML =
+      this.responseText;
+    }
+  };
+  xhttp.open("GET", "ajax_info.txt", true);
+  xhttp.send();
+}
+<span class="nt">&lt;/script&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dom_document_object_model"><a class="anchor" href="#_dom_document_object_model"></a>1.6. DOM – Document Object Model</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Ein Standardobjektmodell für XML</p>
+</li>
+<li>
+<p>Eine Standard-Programmierschnittstelle für XML</p>
+</li>
+<li>
+<p>Plattform- und sprachunabhängig</p>
+</li>
+<li>
+<p>Ein W3C-Standard</p>
+</li>
+<li>
+<p>Stellt ein XML-Dokument als Baumstruktur dar</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-16-43-39-487.png" alt="image 2022 06 09 16 43 39 487">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sax_simple_api_for_xml"><a class="anchor" href="#_sax_simple_api_for_xml"></a>1.7. SAX – Simple API for XML</h3>
+<div class="paragraph">
+<p>Ist eine ereignisorientierte Schnittstelle zum Parsenvon XML-Dokumenten. Im Unterschied zu DOM ist sie ereignisorientiert. Nahezu alle neueren XML-Parser enthalten eine SAX-Implementierung, unter anderem <strong>Xerces</strong> für Java.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-16-44-39-780.png" alt="image 2022 06 09 16 44 39 780">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pl_sql"><a class="anchor" href="#_pl_sql"></a>2. PL-SQL</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Vereint das normale SQL mit Eigenschaften einer echten Programmiersprache, die aus verschiedenen Prozeduren bestehen und modular aufgerufen werden kann.</p>
+</li>
+<li>
+<p>Zusammenfassen von Prozeduren zu Modulen (PACKAGES) ist möglich.</p>
+</li>
+<li>
+<p>PL-SQL Prozeduren können in der Datenbank abgelegt werden und von sämtlichen Benutzern mit entsprechenden Rechten ausgeführt werden.</p>
+</li>
+<li>
+<p>Erhöhung der Effizienz der Softwarentwicklung im Datenbankbereich</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_prozedur"><a class="anchor" href="#_prozedur"></a>2.1. Prozedur</h3>
+<div class="paragraph">
+<p>Ist ein benannter SQL-Block, der eine oder mehr Anweisungen ausführt. Daten können durch die Parameter-Liste an die Prozedur übergeben  bzw. von der Prozedur erhalten werden.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-16-59-23-524.png" alt="image 2022 06 09 16 59 23 524">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_funktion"><a class="anchor" href="#_funktion"></a>2.2. Funktion</h3>
+<div class="paragraph">
+<p>Ein benannter SQL-Block, der einen Einzelwert zurückgibt und kann wie ein PL/SQL-Ausdruck aufgerufen werden.
+Funktionen und Prozeduren sind ident strukturiert, bis auf die in der Funktion enthaltene RETURN-Klausel.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-16-59-31-036.png" alt="image 2022 06 09 16 59 31 036">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_package"><a class="anchor" href="#_package"></a>2.3. Package</h3>
+<div class="paragraph">
+<p>Ist eine benannte Sammlung von Prozeduren, Funktionen, Typen und Variablen.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ausführung_einer_stored_procedure_function"><a class="anchor" href="#_ausführung_einer_stored_procedure_function"></a>2.4. Ausführung einer Stored Procedure/ Function</h3>
+<div class="paragraph">
+<p><strong>Aus Rumpf einer anderen Prozedur</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-17-01-55-256.png" alt="image 2022 06 09 17 01 55 256">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Unter Verwendung eines anonymen PL/SQL Bockes:</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-17-02-14-361.png" alt="image 2022 06 09 17 02 14 361">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>unter EXECUTE Kommandos:</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-17-02-26-793.png" alt="image 2022 06 09 17 02 26 793">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Verwendung von stored functions (ähnlich wie built-in functions)</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-17-02-48-493.png" alt="image 2022 06 09 17 02 48 493">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_exceptions"><a class="anchor" href="#_exceptions"></a>2.5. Exceptions</h3>
+<div class="sect3">
+<h4 id="_syntax"><a class="anchor" href="#_syntax"></a>2.5.1. Syntax</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>System-defined exceptions</p>
+</li>
+<li>
+<p>User-defined exceptions</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">DECLARE</span>
+   <span class="o">&lt;</span><span class="n">declarations</span> <span class="n">section</span><span class="o">&gt;</span>
+<span class="k">BEGIN</span>
+   <span class="o">&lt;</span><span class="n">executable</span> <span class="n">command</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">EXCEPTION</span>
+   <span class="o">&lt;</span><span class="n">exception</span> <span class="n">handling</span> <span class="n">goes</span> <span class="n">here</span> <span class="o">&gt;</span>
+   <span class="k">WHEN</span> <span class="n">exception1</span> <span class="k">THEN</span>
+      <span class="n">exception1</span><span class="o">-</span><span class="n">handling</span><span class="o">-</span><span class="n">statements</span>
+   <span class="k">WHEN</span> <span class="n">exception2</span>  <span class="k">THEN</span>
+      <span class="n">exception2</span><span class="o">-</span><span class="n">handling</span><span class="o">-</span><span class="n">statements</span>
+   <span class="k">WHEN</span> <span class="n">exception3</span> <span class="k">THEN</span>
+      <span class="n">exception3</span><span class="o">-</span><span class="n">handling</span><span class="o">-</span><span class="n">statements</span>
+   <span class="p">........</span>
+   <span class="k">WHEN</span> <span class="n">others</span> <span class="k">THEN</span>
+      <span class="n">exception3</span><span class="o">-</span><span class="n">handling</span><span class="o">-</span><span class="n">statements</span>
+<span class="k">END</span>
+
+<span class="o">/</span>
+
+<span class="k">DECLARE</span>
+   <span class="n">c_id</span> <span class="n">customers</span><span class="p">.</span><span class="n">id</span><span class="o">%</span><span class="k">type</span> <span class="p">:</span><span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+   <span class="n">c_name</span> <span class="n">customerS</span><span class="p">.</span><span class="n">Name</span><span class="o">%</span><span class="k">type</span><span class="p">;</span>
+   <span class="n">c_addr</span> <span class="n">customers</span><span class="p">.</span><span class="n">address</span><span class="o">%</span><span class="k">type</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+   <span class="k">SELECT</span>  <span class="n">name</span><span class="p">,</span> <span class="n">address</span> <span class="k">INTO</span>  <span class="n">c_name</span><span class="p">,</span> <span class="n">c_addr</span>
+   <span class="k">FROM</span> <span class="n">customers</span>
+   <span class="k">WHERE</span> <span class="n">id</span> <span class="o">=</span> <span class="n">c_id</span><span class="p">;</span>
+   <span class="n">DBMS_OUTPUT</span><span class="p">.</span><span class="n">PUT_LINE</span> <span class="p">(</span><span class="s1">'Name: '</span><span class="o">||</span>  <span class="n">c_name</span><span class="p">);</span>
+   <span class="n">DBMS_OUTPUT</span><span class="p">.</span><span class="n">PUT_LINE</span> <span class="p">(</span><span class="s1">'Address: '</span> <span class="o">||</span> <span class="n">c_addr</span><span class="p">);</span>
+
+<span class="n">EXCEPTION</span>
+   <span class="k">WHEN</span> <span class="n">no_data_found</span> <span class="k">THEN</span>
+      <span class="n">dbms_output</span><span class="p">.</span><span class="n">put_line</span><span class="p">(</span><span class="s1">'No such customer!'</span><span class="p">);</span>
+   <span class="k">WHEN</span> <span class="n">others</span> <span class="k">THEN</span>
+      <span class="n">dbms_output</span><span class="p">.</span><span class="n">put_line</span><span class="p">(</span><span class="s1">'Error!'</span><span class="p">);</span>
+<span class="k">END</span><span class="p">;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_raising_exceptions"><a class="anchor" href="#_raising_exceptions"></a>2.5.2. Raising Exceptions</h4>
+<div class="paragraph">
+<p>Hier ist das <strong>Raise</strong> wichtig.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">DECLARE</span>
+   <span class="n">exception_name</span> <span class="n">EXCEPTION</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+   <span class="n">IF</span> <span class="n">condition</span> <span class="k">THEN</span>
+      <span class="n">RAISE</span> <span class="n">exception_name</span><span class="p">;</span>
+   <span class="k">END</span> <span class="n">IF</span><span class="p">;</span>
+<span class="n">EXCEPTION</span>
+   <span class="k">WHEN</span> <span class="n">exception_name</span> <span class="k">THEN</span>
+   <span class="k">statement</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_user_defined_exceptions"><a class="anchor" href="#_user_defined_exceptions"></a>2.5.3. User-defined Exceptions</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">DECLARE</span>
+<span class="n">my</span><span class="o">-</span><span class="n">exception</span> <span class="n">EXCEPTION</span><span class="p">;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pre_defined_exceptions"><a class="anchor" href="#_pre_defined_exceptions"></a>2.5.4. Pre-defined Exceptions</h4>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-17-10-11-537.png" alt="image 2022 06 09 17 10 11 537">
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_trigger"><a class="anchor" href="#_trigger"></a>2.6. Trigger</h3>
+<div class="paragraph">
+<p>Ein Trigger ist eine gespeicherte Prozedur in der Datenbank, die automatisch aufgerufen wird, wenn ein spezielles Ereignis in der Datenbank auftritt.</p>
+</div>
+<div class="paragraph">
+<p><strong>DML-Trigger</strong> werden bei Insert-, Update- oder Delete-Statements verwendet, also immer dann, wenn ein Datensatz hinzugefügt, bearbeitet oder gelöscht werden soll.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-17-50-09-374.png" alt="image 2022 06 09 17 50 09 374">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>DDL-Trigger</strong> werden immer dann verwendet, wenn die grundlegende Struktur  einer Datenbanktabelle verändert wird.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-17-50-21-631.png" alt="image 2022 06 09 17 50 21 631">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_jobs"><a class="anchor" href="#_jobs"></a>2.7. Jobs</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Zeitgesteuerte Events</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_jpa"><a class="anchor" href="#_jpa"></a>3. JPA</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://davidenkovic.github.io/school-notes/jpa-test.html">JPA</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_r"><a class="anchor" href="#_r"></a>4. R</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Bro keine Ahnung</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_apex"><a class="anchor" href="#_apex"></a>5. Apex</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Eine Low-Code Entwicklungsplattform</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Auswählen von verschiedenen UI Elementen, Drag and Drop, wenig Code (mehr allerdings möglich)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>2004 mit dem Namen HTML Db von Oracle veröffentlicht</p>
+</li>
+<li>
+<p>Läuft in der Oracle Datenbank, und ist auch Teil der normalen Oracle Datenbank Lizenz</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_3_stufen_architektur"><a class="anchor" href="#_3_stufen_architektur"></a>5.1. 3-Stufen Architektur*</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Browser</p>
+</li>
+<li>
+<p>Web Server</p>
+</li>
+<li>
+<p>Datenbank</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ablauf"><a class="anchor" href="#_ablauf"></a>5.2. Ablauf</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Browser schickt eine Http-Anfrage an den Web Server</p>
+</li>
+<li>
+<p>Http-Anfragen werden zu entsprechenden PLSQL-Anfragen übersetzt</p>
+</li>
+<li>
+<p>Datenbank liefert die Metadaten zur Page zurück an den Server</p>
+</li>
+<li>
+<p>Server leitet sie weiter zum Web Browser</p>
+</li>
+<li>
+<p>Verarbeitung und Anzeige der Applikation</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_data_schemas"><a class="anchor" href="#_data_schemas"></a>5.3. Data Schemas</h3>
+<div class="paragraph">
+<p>Beschreibt Tabellen und dessen Beziehungen</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_oracle_apex_engine"><a class="anchor" href="#_oracle_apex_engine"></a>5.4. Oracle Apex Engine</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Zuständig für das Rendern und Verarbeiten von Pages</p>
+</li>
+<li>
+<p>Managen von Sessions</p>
+</li>
+<li>
+<p>Authentication</p>
+</li>
+<li>
+<p>Authorization</p>
+</li>
+<li>
+<p>Validation</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_application"><a class="anchor" href="#_application"></a>5.5. Application</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Ansammlung an Pages welche miteinander verlinkt sind (anhand von Navigation Menus, Buttons,&#8230;&#8203;)</p>
+</li>
+<li>
+<p>Pages teilen sich eine Session und Authentifizierung</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pages"><a class="anchor" href="#_pages"></a>5.6. Pages</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Eine Application besitzt eine oder mehrere Pages</p>
+</li>
+<li>
+<p>Eine Page wiederum besitzt Items welche in Regions gruppiert sind</p>
+</li>
+<li>
+<p>Duch das Navigationsmenü kann man durch verschiedene Pages wechseln, oder durch Verlinkungen</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_region"><a class="anchor" href="#_region"></a>5.7. Region</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Wird verwendet um Items zu gruppieren</p>
+</li>
+<li>
+<p>Kann/Wird auch zum Anzeigen von Daten verwendet werden</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Tree</p>
+</li>
+<li>
+<p>Report</p>
+</li>
+<li>
+<p>Charts</p>
+</li>
+<li>
+<p>…</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Aussehen kann anhand von Region Templates angepasst werden.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_region_tree"><a class="anchor" href="#_region_tree"></a>5.8. Region - Tree</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-18-19-09-488.png" alt="image 2022 06 09 18 19 09 488">
+</div>
+</div>
+<div class="paragraph">
+<p>Besteht aus mehreren Ästen, welche wiederum mehrere Blätter haben</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>1: Stamm</p>
+</li>
+<li>
+<p>-1: Ast</p>
+</li>
+<li>
+<p>0: Blatt</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tree"><a class="anchor" href="#_tree"></a>5.9. Tree</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/image-2022-06-09-18-19-40-295.png" alt="image 2022 06 09 18 19 40 295">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_notes"><a class="anchor" href="#_notes"></a>6. Notes</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="title">XML</div>
+<div class="content">
+<pre>Referat XML:
+	- DTD Document Type Definition (alt)
+		DEfinition die elemente, attribute, entities, etc.. vereinbart, die in einem xml dokument
+		enthalten sein dürfen bzw. müssen, ist in eigener Syntax verfasst
+	- XML Schema (neu)
+		Definition liegt im XML schema vor, eine neue syntax muss nicht erlernt werden
+	- DTD od. XML Schema
+
+	- XSLT eXtensible Stylesheet Language Transformations
+		stylesheet language für XML, kann XML zu HTML transfornmieren
+	- DOM
+		definiert einen standard für zugreifen und manipulieren eines XML documents, platform- und sprachenunabhängig
+	- SAX
+	- Oracle
+		package dbms_xmlquery.. =&gt; Ergebniss eines selectstatements als xml ausgeben
+	- XML-Status
+		well formed (tags stimmen), valid(muss well formed sein und DTD oder Schema getreu sein)
+	- Warum verwendet man AJAX
+		zb. suche in einer liste, updaten ohne seite neu zu laden
+	- XValidator</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">PLSQL</div>
+<div class="content">
+<pre>PLSQL Referat Fragen:
+
+Kann die prozedur was returnen =&gt; ja, out parameter
+
+wie ruft man die auf =&gt; in begin end block, execute func, select &lt;procedure&gt; from dual
+
+MDRT$ in Tabellen =&gt; weiß keiner
+
+Tabellen gelöscht =&gt; von recycle bin wieder holen
+
+was gibts noch außer %type =&gt; %rowtype
+
+|| =&gt; pipe, strings concat bzw. konkatinieren
+
+scott.my_funcs_pkg.my_func =&gt; user.package.function oder procedure from dual
+
+wie schauts aus bei count, in trigger update und insert was passiert =&gt; trigger mutation, ganz schlecht
+
+trigger =&gt; raise application error bricht trigger ab
+
+insert in trigger =&gt; nein weil dann mutiert der trigger my nibba
+
+trigger for each row =&gt; nur dann hat man :new und :old
+
+wie haben oracle dbms scheduler realisiert =&gt; dbms_scheduler ist package  create_job ist procedure
+
+was ist job, wie funktioniert, package dbms_scheduler
+
+aufrufgesteuerte sachen =&gt; procedures, functions
+
+wozu braucht man cursor =&gt; damit man mehrere zeilen bei einem select ohne fehler zurück
+bekommen kann
+
+Select in variable =&gt; select * into variable
+
+cursor =&gt; loop fetch usw. oder cursor for</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">JPA</div>
+<div class="content">
+<pre>JPA Referat:
+
+Wie kann man sql in jpa schreiben =&gt; jpql
+
+was sind annotationen =&gt; einfach @ManyToMany z.B. über property
+
+jpa =&gt; spezifikation
+
+hibernate =&gt; implementierung vom standard
+
+wer ist topLink =&gt; oracle implementierung
+
+wie macht oracle db primary keys =&gt; sequence
+
+andere möglichkeiten für primary key =&gt; strategy.table macht eigene tabelle und zählt eben immer eins hoch
+
+befehl für in db speichern =&gt; merge oder persist (es gibt schönes bild  dafür)
+
+klasse ohne @table =&gt; heißt so wie klasse
+
+für was verwendet man @columnName =&gt; variable name darf nicht gleich sein wie datentyp (number, date, ...)
+
+dtype bei single table =&gt; gibt an von welcher klasse die zeile ist</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">APEX</div>
+<div class="content">
+<pre>Referat APEX:
+
+- Wie kann man Apex Erweiterungen schreiben
+    Erweiterungen mit PLSQL, SQL, JS,
+
+- Gratis version von Oracle
+    Oracle xe, limitierung in Speicher und kernel...
+
+- Konkurrent zu "HTMLDB"
+    Excel, Access (Problem: Sicherheit und Daten)
+
+- Wie ist eine APEX Application aufgebaut
+    1. Application
+    2. Pages
+    3. Regions
+    4. Items
+
+- Was ist Database links
+    verlinken zu anderen dbs zb.: von atlasdb zu delphidb
+
+- Was ist Validations
+    ob eingabe den richtlinien entspricht
+
+- Was ist Page processing
+    zb.: wenn ein Button gedrückt (oder Page wird geladen, ...) wird eine bestimmte aufgabe ausführen
+
+- Wie werden charts umgesetzt (technische umsetzung)
+    SVG</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fragen"><a class="anchor" href="#_fragen"></a>7. Fragen</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Example 1. JPA</div>
+<div class="content">
+<div class="paragraph">
+<p><strong>JPA Referat Fragen:</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Wie kann man sql in jpa schreiben</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> jpql</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> was sind annotationen</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> einfach @ManyToMany z.B. über property</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> jpa</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> spezifikation</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> hibernate</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> implementierung vom standard</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> was ist topLink</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong>  oracle implementierung</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> wie macht oracle db primary keys</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> sequence</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> andere möglichkeiten für primary key</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> strategy.table macht eigene tabelle und zählt eben immer eins hoch</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> befehl für in db speichern</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> merge oder persist (es gibt schönes bild  dafür)</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> klasse ohne @table</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> heißt so wie klasse</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong>  für was verwendet man @columnName</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> variable name darf nicht gleich sein wie datentyp (number, date, &#8230;&#8203;)</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> dtype bei single table</p>
+</div>
+<div class="paragraph">
+<p><strong>Antwort:</strong> gibt an von welcher klasse die zeile ist</p>
+</div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="title">Example 2. PLSQL</div>
+<div class="content">
+<div class="paragraph">
+<p><strong>PLSQL Referat Fragen:</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Kann die prozedur was returnen</p>
+</div>
+<div class="paragraph">
+<p>ja, out parameter</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> wie ruft man die auf</p>
+</div>
+<div class="paragraph">
+<p>in begin end block, execute func, select &lt;procedure&gt; from dual</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> MDRT$ in Tabellen</p>
+</div>
+<div class="paragraph">
+<p>weiß keiner</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Tabellen gelöscht</p>
+</div>
+<div class="paragraph">
+<p>von recycle bin wieder holen</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> was gibts noch außer %type</p>
+</div>
+<div class="paragraph">
+<p>%rowtype</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> ||</p>
+</div>
+<div class="paragraph">
+<p>pipe, strings concat bzw. konkatinieren</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> scott.my_funcs_pkg.my_func</p>
+</div>
+<div class="paragraph">
+<p>user.package.function oder procedure from dual</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> wie schauts aus bei count, in trigger update und insert was passiert &#8658; trigger mutation, ganz schlecht</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> trigger</p>
+</div>
+<div class="paragraph">
+<p>raise application error bricht trigger ab</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> insert in trigger</p>
+</div>
+<div class="paragraph">
+<p>nein weil dann mutiert der trigger my nibba</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> trigger for each row</p>
+</div>
+<div class="paragraph">
+<p>nur dann hat man :new und :old</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> wie haben oracle dbms scheduler realisiert</p>
+</div>
+<div class="paragraph">
+<p>dbms_scheduler ist package  create_job ist procedure</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> aufrufgesteuerte sachen</p>
+</div>
+<div class="paragraph">
+<p>procedures, functions</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> wozu braucht man cursor</p>
+</div>
+<div class="paragraph">
+<p>damit man mehrere zeilen bei einem select ohne fehler zurück bekommen kann</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> Select in variable</p>
+</div>
+<div class="paragraph">
+<p>select * into variable</p>
+</div>
+<div class="paragraph">
+<p><strong>Frage:</strong> cursor</p>
+</div>
+<div class="paragraph">
+<p>loop fetch usw. oder cursor for</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2022-06-09 16:42:48 UTC
+</div>
+</div>
+<style>
+pre.rouge table td { padding: 5px; }
+pre.rouge table pre { margin: 0; }
+pre.rouge .cm {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cp {
+  color: #999999;
+  font-weight: bold;
+}
+pre.rouge .c1 {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cs {
+  color: #999999;
+  font-weight: bold;
+  font-style: italic;
+}
+pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cpf {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .err {
+  color: #a61717;
+  background-color: #e3d2d2;
+}
+pre.rouge .gd {
+  color: #000000;
+  background-color: #ffdddd;
+}
+pre.rouge .ge {
+  color: #000000;
+  font-style: italic;
+}
+pre.rouge .gr {
+  color: #aa0000;
+}
+pre.rouge .gh {
+  color: #999999;
+}
+pre.rouge .gi {
+  color: #000000;
+  background-color: #ddffdd;
+}
+pre.rouge .go {
+  color: #888888;
+}
+pre.rouge .gp {
+  color: #555555;
+}
+pre.rouge .gs {
+  font-weight: bold;
+}
+pre.rouge .gu {
+  color: #aaaaaa;
+}
+pre.rouge .gt {
+  color: #aa0000;
+}
+pre.rouge .kc {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kd {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kn {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kp {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kr {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kt {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .k, pre.rouge .kv {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .mf {
+  color: #009999;
+}
+pre.rouge .mh {
+  color: #009999;
+}
+pre.rouge .il {
+  color: #009999;
+}
+pre.rouge .mi {
+  color: #009999;
+}
+pre.rouge .mo {
+  color: #009999;
+}
+pre.rouge .m, pre.rouge .mb, pre.rouge .mx {
+  color: #009999;
+}
+pre.rouge .sb {
+  color: #d14;
+}
+pre.rouge .sc {
+  color: #d14;
+}
+pre.rouge .sd {
+  color: #d14;
+}
+pre.rouge .s2 {
+  color: #d14;
+}
+pre.rouge .se {
+  color: #d14;
+}
+pre.rouge .sh {
+  color: #d14;
+}
+pre.rouge .si {
+  color: #d14;
+}
+pre.rouge .sx {
+  color: #d14;
+}
+pre.rouge .sr {
+  color: #009926;
+}
+pre.rouge .s1 {
+  color: #d14;
+}
+pre.rouge .ss {
+  color: #990073;
+}
+pre.rouge .s, pre.rouge .sa, pre.rouge .dl {
+  color: #d14;
+}
+pre.rouge .na {
+  color: #008080;
+}
+pre.rouge .bp {
+  color: #999999;
+}
+pre.rouge .nb {
+  color: #0086B3;
+}
+pre.rouge .nc {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .no {
+  color: #008080;
+}
+pre.rouge .nd {
+  color: #3c5d5d;
+  font-weight: bold;
+}
+pre.rouge .ni {
+  color: #800080;
+}
+pre.rouge .ne {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nf, pre.rouge .fm {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nl {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nn {
+  color: #555555;
+}
+pre.rouge .nt {
+  color: #000080;
+}
+pre.rouge .vc {
+  color: #008080;
+}
+pre.rouge .vg {
+  color: #008080;
+}
+pre.rouge .vi {
+  color: #008080;
+}
+pre.rouge .nv, pre.rouge .vm {
+  color: #008080;
+}
+pre.rouge .ow {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .o {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .w {
+  color: #bbbbbb;
+}
+pre.rouge {
+  background-color: #f8f8f8;
+}
+</style>
+</body>
+</html>
